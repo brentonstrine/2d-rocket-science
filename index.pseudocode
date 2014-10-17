@@ -1,0 +1,38 @@
+// 1D. Version .1 will only move along a straight line. 
+
+// CREATE A STAGE
+
+// click and drag, create rectangle
+// calculate perimiter of rectangle, assign static weight based on that
+// calculate area of rectangle, assign static weight based on that
+
+// add one or more engines to the bottom. add fixed weight per engine. calculate thrust per engine
+// display: weight, thrust, and charts of weight/thrust as fuel is used.
+
+// if this is not the first stage, add weights of previous stages to it. thrusters from above do not count unless they don't have anything below them. 
+
+// aerodynamics: for now, just measure how wide it is. every pixel of width is 1 unit of air resistance. 
+
+
+// LAUNCH / FLIGHT
+// calculate current speed
+// calculate thrust
+// these equations may help: http://exploration.grc.nasa.gov/education/rocket/rktpow.html
+// calculate how much fuel is used per second
+// calculate how much the rocket has moved during this time segment
+// calculate the new speed based on thrust (delta V)
+// speed is influenced by thrust/weight and aerodynamics. for now assume gravity is exactly equal.
+
+// STAGE SEP
+// begin calculating each component separately
+// do not allow components to run into eachother--if they do, appropriately explode, combine, or drift
+// if a stage falls out of the window frame, stop following it. 
+
+//ESCAPE VELOCITY
+//when escape velocity is reached, turn gravity off?
+
+//2D. for version .2
+
+//TRAJECTORY PROJECTION
+//project trajectory throughout, prominently displaying apoapsis. 
+// ? display idealized trajectories?
