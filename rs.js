@@ -9,6 +9,19 @@ $("document").ready(function(){
     //     $("#mousey").html(currentMousePos.y);
     //
     // });
+var buildtype = "tank";
+
+$(".controls").on("click mousedown touchstart", function(e){
+    e.stopPropagation();
+});
+$("#tank").on("click", function(){
+    buildtype = "tank";
+    $("#nextpart").html(buildtype);
+});
+$("#engine").on("click", function(){
+    buildtype = "engine";
+    $("#nextpart").html(buildtype);
+});
 
 
 $(".parts").on("mousedown touchstart", ".part", function(pos){
@@ -50,17 +63,25 @@ console.log(vOffset);
 });
 
 
-  $("body").on("mousedown touchstart", function(pos){
-      pos.preventDefault();
-  console.log("]]]]]]]]]]]]]]]]]]]");
+$("body").on("mousedown touchstart", function(pos){
+    pos.preventDefault();
+    var $fabricating = $(".rec");
+    console.log("[[[[[[body mousedown]]]]]]]");
     boxCoords[0] = [pos.clientX,pos.clientY];
+
+    if(buildtype=="tank"){
+        $fabricating.html("N<br>A<br>S<br>A").addClass("tank");
+    } else {
+        $fabricating.addClass("engine");
+
+    }
 
 //if(boxCoords.length==1){
 
 //console.log(boxCoords.length);
 //console.log(boxCoords);
 
-        $(".rec").css({"left": boxCoords[0][0], "top": boxCoords[0][1], "width": 0, "height": 0, display: "flex"});
+        $fabricating.css({"left": boxCoords[0][0], "top": boxCoords[0][1], "width": 0, "height": 0, display: "flex"});
 
         $(this).on("mousemove.setsize touchmove.setsize", function(e){
             e.preventDefault();
@@ -73,43 +94,70 @@ console.log(vOffset);
 
                 $("#wid").html(w);
                 $("#hei").html(h);
+                var cursoroffset = 0;
                 if(w<0){
                     w = w * -1;
-                    $(".rec").css({
-                        "left": l,
+                    $fabricating.css({
+                        "left": l - cursoroffset,
                         "width": w
                     });
-                    } else {
-                    $(".rec").css({
-                        "width": w
+                } else {
+                    $fabricating.css({
+                        "width": w + cursoroffset
                     });
                 }
                 if(h<0){
                     h = h * -1;
-                    $(".rec").css({
-                        "top": t,
+                    $fabricating.css({
+                        "top": t - cursoroffset,
                         "height": h
                     });
                 } else {
-                    $(".rec").css({
-                        "height": h
+                    $fabricating.css({
+                        "height": h + cursoroffset
                     });
                 }
 
-                var maxfont = 60;
-                if (h<=250){
-                maxfont = h/5;
-                }
-
-                if(w<=60 && 60<=maxfont){
-                maxfont = w;
+                if(buildtype=="tank"){
+                    var maxfont = 18;
+                    if (h<=250){ maxfont = h/5; }
+                    if(w<=60 && 60<=maxfont){ maxfont = w; }
+                    $fabricating.css({"font-size": maxfont + "px"});
                 } else {
-                //console.log(maxfont + " > " + w + " < 60" )
-                }
+                    //get width of engine for this height.
+                    var enginewidth = h * .908695;
 
-                $(".rec").css({
-                "font-size": maxfont + "px"
-                });
+                    //figure out what the remainder is for leftover rockets at this width
+                    var excess = 0;
+
+                    if(w>enginewidth){
+                        excess = w % enginewidth;
+                    }
+                    var rockets = (w / enginewidth);
+                    var excessC = w - (rockets*enginewidth);
+
+
+                    console.log("\r\nrockets: " + Math.floor(rockets) +"/"+ rockets);
+                    console.log("excess: " + excess +" / "+ excessC);
+                    console.log("width/Rwidth: " + w +" / "+ enginewidth);
+
+                    //var actualrockets = w*Math.floor(rockets);
+                    var notrockets = 0;
+                    if(excess>0){
+                        notrockets = w - excess;
+                        console.log("excess:" + excess + " w-e: " + notrockets);
+                    }
+
+
+
+
+                    //subtract remainder from actual width (add to padding and remove from width)
+                    $fabricating.css({
+                        "width": w - excess,
+                        "padding-left": excess/2,
+                        "padding-right": excess/2
+                    });
+                }
 
 
                 var dryWeight = ((w + h)*2);
@@ -125,23 +173,23 @@ console.log(vOffset);
 
         //if(boxCoords.length==2){
             $(this).one("mouseup touchend touchcancel", function(){
-                console.log("CLONE!!!!!!")
                 $(this).off(".setsize");
-                $part = $(".rec");
-                var params =
-                $part
-                .css("display",'')
-                .css(["top", "left", "width", "height", "font-size"]);
+                $fabricating.css(["top", "left", "width", "height", "font-size"]);
                 //var partname = "part" + parts.length;
                 //console.log(partname);
                 //parts[partname] = params;
                 //console.log(parts);
                 //console.log(parts[partname]);
 
+                var classes = "part " + buildtype;
+                $fabricating.clone()
+                    .attr("class",classes)
+                    .appendTo(".parts");
 
-                $part.clone()
-                .attr("class","part")
-                .appendTo(".parts");
+                $fabricating
+                    .html("")
+                    .attr("class","rec")
+                    .css("display",'');
             });
         //}
     //} else {
@@ -150,23 +198,23 @@ console.log(vOffset);
   });
 });
 
-tanks = [];
-//(function(){
-    var Tank = {
-        init : function(){
-            var tankNo = tanks.length;
-            tanks.push("tank" + tankNo);
-            $tank = $('<div>', {class: 'tank', id: tankNo});
-            $('body').append($tank);
-        },
-        some: function(){
-                console.log("Some");
-        }
-    }
-//})();
-
-Tank.init();
-Tank.some();
+// tanks = [];
+// //(function(){
+//     var Tank = {
+//         init : function(){
+//             var tankNo = tanks.length;
+//             tanks.push("tank" + tankNo);
+//             $tank = $('<div>', {class: 'tank', id: tankNo});
+//             $('body').append($tank);
+//         },
+//         some: function(){
+//                 console.log("Some");
+//         }
+//     }
+// //})();
+//
+// Tank.init();
+// Tank.some();
 
 
 
