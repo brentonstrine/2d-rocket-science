@@ -76,3 +76,17 @@ canvas {
     background-clip: content-box;
     background-origin: content-box;
 }
+.person{
+    background-image: url(resources/person.png);
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: top;
+    background-size: contain;
+    background-clip: content-box;
+    background-origin: content-box;
+    position: absolute;
+    top: 50%;
+    left: 400px;
+    width: 20px;
+    height:40px;
+}
