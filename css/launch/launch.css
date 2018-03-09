@@ -1,0 +1,73 @@
+.world {
+  position: relative;
+  width: 10000px;
+  height: 2100px;
+  background: linear-gradient(to top, #7db9e8 0%,#ffffff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */;
+  border-bottom: solid 15px green;
+}
+.dot {
+  position: absolute;
+  min-width: 1px;
+  min-height: 1px;
+}
+.dot-ascending {
+  background: linear-gradient(to top left, transparent 49%, green 50%,transparent 51%);
+}
+.dot-descending {
+  background: linear-gradient(to bottom left, transparent 49%, red 50%,transparent 51%);
+}
+.dot::after {
+  content: "";
+  width: 2px;
+  height: 2px;
+  background-color: blue;
+  position: absolute;
+  top: -1px;
+  right: 0;
+}
+.dot-final {
+  width: 20px;
+  height: 0;
+  border-top: dashed 1px black;
+  background-color: white;
+  border-left-color: blue;
+}
+.dot-crash {
+    border: dotted 4px yellow;
+    background-color: #ff2600;
+    border-radius: 51%;
+}
+.max-height {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  border-top: dashed 1px black;
+  background-color: white;
+  border-left-color: blue;
+}
+.max-height::after {
+  content: "Maximum Altitude Reached";
+  font-family: sans-serif;
+  padding-left: 50px;
+  position: relative;
+  top: -1.3em;
+}
+
+.karman-line {
+  position: absolute;
+  top: 1100px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  border-top: dashed 1px blue;
+  background-color: white;
+  border-left-color: blue;
+}
+.karman-line::after {
+  content: "Karman Line";
+  font-family: sans-serif;
+  padding-left: 50px;
+  position: relative;
+  top: -1.3em;
+}
