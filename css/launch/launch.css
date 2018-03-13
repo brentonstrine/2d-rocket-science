@@ -16,14 +16,39 @@
 .dot-descending {
   background: linear-gradient(to bottom left, transparent 49%, red 50%,transparent 51%);
 }
+
 .dot::after {
   content: "";
-  width: 2px;
-  height: 2px;
-  background-color: blue;
+  width: 1px;
+  height: 1px;
   position: absolute;
-  top: -1px;
+}
+.dot::before {
+  content: "";
+  width: 1px;
+  height: 1px;
+  position: absolute;
+}
+.dot-ascending::after {
+  background-color: blue;
+  top: 0;
   right: 0;
+}
+.dot-ascending::before {
+  background-color: green;
+  bottom: 0;
+  left: 0;
+}
+
+.dot-descending::after {
+  background-color: orange;
+  bottom: 0;
+  right: 0;
+}
+.dot-descending::before {
+  background-color: red;
+  top: 0;
+  left: 0;
 }
 .dot-final {
   width: 20px;
@@ -41,7 +66,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  height: 1px;
+  height: 0;
   border-top: dashed 1px black;
   background-color: white;
   border-left-color: blue;
@@ -59,7 +84,7 @@
   top: 1100px;
   left: 0;
   right: 0;
-  height: 1px;
+  height: 0;
   border-top: dashed 1px blue;
   background-color: white;
   border-left-color: blue;
@@ -70,4 +95,10 @@
   padding-left: 50px;
   position: relative;
   top: -1.3em;
+}
+.instructions {
+  font-family: sans-serif;
+  position: absolute;
+  top: 2085px;
+  left: 280px;
 }
