@@ -6,6 +6,7 @@ var worldHeight = 2100;
 // Universe constants
 var escapeVelocity = 3000;
 var gravity = -1; // pixel per second
+var microgravity = gravity;
 
 // Rocket Equation
 var maxConsumption = 1; // unit per second
@@ -25,6 +26,7 @@ var oldPos = {x: 0, y: 0};
 var maxTime = 300;
 var maxHeight = 0;
 var maxVelocity = {x:0, y:0};
+var targetAltitude = 1100;
 
 var plotRocketAt = function(t) {
   oldPos = {x:position.x, y:position.y};
@@ -43,7 +45,7 @@ var plotRocketAt = function(t) {
 
   // Adjust thrust according to roll program
   var totalThrust = thrust.x + thrust.y;
-  var thrustAdjustment = rollProgram(position.x, velocity.y);
+  var thrustAdjustment = rollProgram(position.x, velocity);
 
   if(thrustAdjustment.type === "exact") {
     thrust.y = thrustAdjustment.yExact;
@@ -61,31 +63,35 @@ var plotRocketAt = function(t) {
   }
   fuelMass = fuelMass - fuelConsumed;
 
-  // Calculating X
-  weight = (dryMass + fuelMass) * gravity;
-  twr = thrust.x / (weight*gravity);
-
-  position.x = (position.x + twr + gravity  + velocity.x);
-  velocity.x = position.x - oldPos.x;
+  changeWind(position.y);
+  if (Math.abs(velocity.y) < Math.abs(wind)) {
+    velocity.y += wind;
+  }
 
   // Calculating Y
   position.y = (position.y + velocity.y + thrust.y);
   velocity.y = position.y - oldPos.y;
-/*   changeWind(position.y);
-  if (Math.abs(velocity.y) < Math.abs(wind)) {
-    velocity.y += wind;
-  } */
 
-    // curvature adjustment
-    var pixelsPerSecond = position.y - oldPos.y;
-    var adj = pixelsPerSecond / escapeVelocity;
-    velocity.x = velocity.x + adj;
+  // Calculating X
+  // curvature adjustment
+  var rangeSpeed = position.y - oldPos.y;
+  var curvatureAdjustment = rangeSpeed / escapeVelocity;
+  microgravity = (curvatureAdjustment < 1) ? (gravity + curvatureAdjustment) : 0.000000000000001;
+
+  weight = (dryMass + fuelMass) * microgravity;
+  twr = thrust.x / (weight*microgravity);
+console.log(twr);
+var climb = (twr + microgravity  + velocity.x);
+console.log(climb);
+  position.x += climb;
+  velocity.x = position.x - oldPos.x;
+
 
   // calculate shape/position of DOM node vector plot
   var domHeight = Math.abs(position.x - oldPos.x);
   var domWidth = Math.abs(position.y - oldPos.y);
   var domTop = position.x;
-    var domLeft = position.y - domWidth;
+  var domLeft = position.y - domWidth;
 
   // dom manipulation
   var dot = document.createElement("div")
@@ -97,7 +103,7 @@ var plotRocketAt = function(t) {
   }
   var top = "top: " + convertToXPos(domTop, position.y) + "px;";
   var left = "left:" + convertToYPos(domLeft) + "px;";
-  var width = "width:" + domWidth + "px;";
+  var width = "width:" + convertToWidth(domWidth) + "px;";
   var height = "height:" + domHeight + "px;";
   var style =  top + left + width + height;
   dot.setAttribute("style", style)
@@ -137,10 +143,13 @@ function crash(dot, reason){
 function convertToXPos(x, y){
   return ((x * -1) / 1) + worldHeight;
 }
+const yScale = 100;
 function convertToYPos(y){
-
-
+  y = y/yScale;
   return (y % 10000) + 50;
+}
+function convertToWidth(y) {
+  return y/yScale;
 }
 var flightCalculations = function(t) {
   if(position.x > maxHeight) {
@@ -154,6 +163,7 @@ var oldVVelocity = 0;
 var oldHVelocity = 0;
 var oldHeight = 0;
 var oldRange = 0;
+var heightGain = .14159;
 var showFlightStats = function(t) {
   console.group("T+" + t);
   console.log("Fuel    : ", fuelMass);
@@ -169,6 +179,7 @@ var showFlightStats = function(t) {
 
   console.log("V-Acclrtn       : ", velocity.x - oldVVelocity);
   console.log("Speed           : ", position.y - oldRange);
+  heightGain = position.x - oldHeight;
   console.log("Height-Gain     : ", position.x - oldHeight);
   console.groupEnd();
   //dot.classList.add("dot-final");
@@ -194,11 +205,31 @@ console.log("==============");
   heightLine.setAttribute("style", "top: " + convertToXPos(maxHeight) + "px;");
   world.appendChild(heightLine);
 }
-var rollProgram = function(altitude, speed) {
+
+const targetVSpeed =
+var rollProgram = function(altitude, velocity) {
+
+  var climbSpeed = velocity.x;
+  var speed = velocity.y;
+  var x = altitude + (heightGain * (climb + 1));
+
+  if(climbSpeed >= targetVSpeed) {
+    return {x: 0, y:1, type: "percent"};
+
+  }
+
   // returns an object containing what percent of thrust should go in the x and y direction (always needs to add to 100)
-  if (altitude < 50) {
+  if (altitude < 199) {
     return {x: 1, y:0, type: "percent"};
-  } else if (altitude < 200) {
+  }
+
+  return {x: .5, y:.5, type: "percent"};
+
+  if (altitude < 200) {
+
+
+
+
     if(velocity.x > 10) {
       return {x: .1, y:.9, type: "percent"};
     }
@@ -274,11 +305,11 @@ var changeWind = function(altitude){
 }
 
   // account for curvature of earth by adding height based on range
-  var curvatureAdjustment = function(range) {
-    var orbits = range/3074.688694454846;
-    return orbits;
-    //return range / 217016.5;
-  };
+  // var curvatureAdjustment = function(range) {
+  //   var orbits = range/3074.688694454846;
+  //   return orbits;
+  //   //return range / 217016.5;
+  // };
 
 
 plotRocketAt(0);
