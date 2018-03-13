@@ -23,7 +23,7 @@ var position = {x: 0, y: 0};
 var oldPos = {x: 0, y: 0};
 
 
-var maxTime = 300;
+var maxTime = 100;
 var maxHeight = 0;
 var maxVelocity = {x:0, y:0};
 var targetAltitude = 1100;
@@ -143,7 +143,7 @@ function crash(dot, reason){
 function convertToXPos(x, y){
   return ((x * -1) / 1) + worldHeight;
 }
-const yScale = 100;
+const yScale = 2;
 function convertToYPos(y){
   y = y/yScale;
   return (y % 10000) + 50;
@@ -206,30 +206,16 @@ console.log("==============");
   world.appendChild(heightLine);
 }
 
-const targetVSpeed =
 var rollProgram = function(altitude, velocity) {
 
   var climbSpeed = velocity.x;
   var speed = velocity.y;
-  var x = altitude + (heightGain * (climb + 1));
-
-  if(climbSpeed >= targetVSpeed) {
-    return {x: 0, y:1, type: "percent"};
-
-  }
+  var x = altitude + (heightGain * (climbSpeed + 1));
 
   // returns an object containing what percent of thrust should go in the x and y direction (always needs to add to 100)
   if (altitude < 199) {
     return {x: 1, y:0, type: "percent"};
-  }
-
-  return {x: .5, y:.5, type: "percent"};
-
-  if (altitude < 200) {
-
-
-
-
+  } else if (altitude < 200) {
     if(velocity.x > 10) {
       return {x: .1, y:.9, type: "percent"};
     }
