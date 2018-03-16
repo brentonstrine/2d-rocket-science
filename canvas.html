@@ -1,10 +1,18 @@
 <!doctype html>
 <html>
 <head>
-     <style>canvas { border: 1px solid black; }</style>
+  <style>
+    canvas {
+      border: 1px solid black;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  </style>
 </head>
 <body>
 <canvas class="world"></canvas>
+<canvas class="ship"></canvas>
 <script src="js/launch/vector-utils.js"></script>
 <script src="js/launch/radialphysics.js"></script>
 </body>

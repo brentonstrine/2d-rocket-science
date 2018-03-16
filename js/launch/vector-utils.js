@@ -69,42 +69,18 @@ var vector = function () {
       v = this.multiply(v, m);
       return v;
     },
-    // setMagnitudeOLD: function (v, m) {// Change a vector's values from a percent to a particular magnitude
-    //   // get the ratio of x/y (abs x+y always == 1)
-    //   if(v.x === 0) { v.x = 0.000000000000000001; }
-    //   if(v.y === 0) { v.y = 0.000000000000000001; }
-    //   var r = v.x / v.y;
-    //   var xm = (m * r) / (Math.sqrt(r**2 + 1));
-    //   var ym = xm / r; // also could have used ym = (Math.pow(m, 1/4) * r) / Math.sqrt((r**2)+1);
-    //
-    //   if(Math.abs(xm) < 0.000000000000000001) { xm = 0; }
-    //   if(Math.abs(ym) < 0.000000000000000001) { ym = 0; }
-    // 	if(v.x>0 && xm>0){xm *= -1;}
-    // 	if(v.x<0 && xm<0){xm *= -1;}
-    // 	if(v.y>0 && ym>0){ym *= -1;}
-    // 	if(v.y<0 && ym<0){ym *= -1;}
-    // 	var completeVector = {x:xm, y:ym};
-    //
-    // 	return completeVector;
-    // },
-
-    // getDirectionNormalized: function(v) {// This normalizes a vector direction so that the magnitude is a constant 100.
-    // 		var direction = this.getDirection(v);
-    //     var magnitude = this.getMagnitude(v);
-    //     this.setMa%gnitude(direction, magnitude);
-    // },
-    getOpposite: function (vector){
-    	return v.multiply(vector, -1);
+    getReverse: function (vector){
+      return v.multiply(vector, -1);
     },
-    getPerpindicularRight: function (vector) {
-    	return {
-      	x: vector.y,
+    getStarboard: function (vector) {
+      return {
+        x: vector.y,
         y: vector.x * -1,
       };
     },
-    getPerpindicularLeft: function (vector) {
-    	return {
-      	x: vector.y * -1,
+    getPort: function (vector) {
+      return {
+        x: vector.y * -1,
         y: vector.x,
       };
     },
