@@ -1,6 +1,9 @@
+window.RocketScience = window.RocketScience || {};
 
-var lastType = "onscreen";
-var AvgType = function(type){
+(function PerformanceTracking () {
+  var lastType = "onscreen";
+  RocketScience.PerformanceTracking = function (type) {
+  //var AvgType = function(type){
   this.count = 0;
   this.lastTime;
   this.average = 0;
@@ -15,4 +18,5 @@ var AvgType = function(type){
     }
     this.lastTime = now;
   };
-}
+};
+}());

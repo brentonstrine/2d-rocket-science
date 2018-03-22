@@ -1,5 +1,8 @@
-var vector = function () {
-  return {
+window.RocketScience = window.RocketScience || {};
+
+(function vector () {
+
+  RocketScience.vector = {
     add: function () {
       var total = {x:0,y:0};
       Array.from(arguments).forEach(function(vector) {
@@ -88,4 +91,5 @@ var vector = function () {
       return v.multiply(v.normalize(position),gravityForce);
     },
   };
-};
+
+}());
