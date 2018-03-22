@@ -1,12 +1,7 @@
 var v = vector() || (function(){debugger;})();
-
-
-// Ship vars
-var ship = document.querySelector(".ship");
-var fuel = 30;
-var position = {x:0, y: 300};
-var velocity = {x:0, y:0};
-var thrust = {x:17.4, y:0};//x=15
+var AvgType = AvgType || (function(){debugger;})();
+var onScreenAvg = new AvgType("onscreen");
+var offScreenAvg = new AvgType("offscreen");
 
 // Relative Directions
 var nav = {
@@ -27,23 +22,77 @@ var gravityForce = -1;
 
 // Viewport Vars
 var world = document.querySelector(".world");
-var worldWidth = 1000;
-var worldHeight = 1000;
+var worldWidth = 10000;
+var worldHeight = 1500;
+var planetHeight = 50000;
 var dotW = 1;
 var dotH = 1;
 var dotColor = "green";
 
+
+var baseThrust = 1;
+// Ship vars
+var ship = document.querySelector(".ship");
+var fuel = baseThrust * 100;
+var position = {x:0, y: planetHeight + 20, previous: {}};
+var velocity = {x:0, y:0, previous: {}};
+var thrust = {x:baseThrust*.1, y:baseThrust*.9, previous: {}};//x=15
+
+// logistical vars
 var count = 0;
-var step = 1000;
+var step = 2000;
 
 function tick() {
-  console.log(count);
+  //console.log(count);
   calculateVelocity();
-  renderTick();
+  if(isVisible()) {
+    renderTick();
+    onScreenAvg.avg();
+  } else {
+    offScreenAvg.avg();
+  }
+  //console.log("onscreen : " + onScreenAvg.average + "\noffscreen: " + offScreenAvg.average);
   if(++count%step<step-1){
     setTimeout(tick, 0);
+  } else {
+    console.log("onscreen : " + onScreenAvg.average + "\noffscreen: " + offScreenAvg.average);
+    //chance to stop and evaluate
+    //debugger;
   }
 }
+var isVisible = function(){
+  //correct the x coordinates
+  var cx = function cx(x){
+    return x + 50;
+  }
+  // correct the y coordinates
+  var cy = function cy(y){
+    return ((y * -1) + worldHeight + planetHeight - 1000);
+  }
+  var x = cx(position.x);
+  var y = cy(position.y);
+  var px = cx(position.previous.x);
+  var py = cy(position.previous.y);
+
+  if(
+    x > 0 &&
+    x < worldWidth &&
+    y > 0 &&
+    y < worldHeight) {
+      return true;
+    } else if (
+    px > 0 &&
+    px < worldWidth &&
+    py > 0 &&
+    py < worldHeight
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+
+  debugger;
+};
 
 var calculateVelocity = function () {
   // no thrust if not enough fuel
@@ -56,6 +105,9 @@ var calculateVelocity = function () {
   }
 
   gravityVector = v.getGravity();
+
+  // log current velocity
+  position.previous = {x: position.x, y: position.y};
 
   // update velocity
   velocity.x = velocity.x + thrust.x + gravityVector.x;
@@ -100,11 +152,11 @@ debugger;
 var Render = function (layer) {
   //correct the x coordinates
   var cx = function cx(x){
-    return x + (worldWidth/2);
+    return x + 50;
   }
   // correct the y coordinates
   var cy = function cy(y){
-    return ((y * -1) + (worldHeight/2));
+    return ((y * -1) + worldHeight + planetHeight - 1000);
   }
 
   if (layer.getContext) {
@@ -119,8 +171,15 @@ var Render = function (layer) {
     },
     circle: function (x,y,radius,a,e) {
       ctx.beginPath();
-      ctx.arc(cx(x),cx(y),radius,a,e);
+      ctx.arc(cx(x),cy(y),radius,a,e);
       ctx.fill();
+    },
+    line: function (xBegin,yBegin,xEnd,yEnd) {
+      ctx.beginPath();
+      ctx.moveTo(cx(xBegin),cy(yBegin));
+      ctx.lineTo(cx(xEnd),cy(yEnd));
+      ctx.lineWidth = 1;
+      ctx.stroke();
     },
   };
 };
@@ -128,7 +187,10 @@ var Render = function (layer) {
 var renderShip = new Render(ship);
 var renderTick = function (){
   renderShip.fillStyle (dotColor);
-  renderShip.rect(position.x, position.y, dotW, dotH);
+  renderShip.rect(position.x, position.y, dotW*3, dotH*3);
+
+  renderShip.line(position.previous.x, position.previous.y, position.x, position.y);
+
 };
 
 var renderWorld = new Render(world);
@@ -141,7 +203,7 @@ var setupWorld = function() {
 
   // draw planet
   renderWorld.fillStyle("green");
-  renderWorld.circle(0,0,280,0,2*Math.PI);
+  renderWorld.circle(0,0,planetHeight,0,2*Math.PI);
 
   // draw crosshairs
   renderWorld.fillStyle("black");
@@ -193,7 +255,7 @@ var setupWorld = function() {
 };
 setupWorld();
 tick();
-world.addEventListener("click", function(){tick();});
+ship.addEventListener("click", function(){tick();});
 
 
 // compare 162 to 122!
