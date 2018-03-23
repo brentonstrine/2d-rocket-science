@@ -13,9 +13,8 @@ window.RocketScience = window.RocketScience || {};
     subtract: function () {
       var total = {};
       Array.from(arguments).forEach(function(vector) {
-        vector.x = (total.x) ? total.x - vector.x : vector.x;
-        vector.y = (total.y) ? total.y - vector.y : vector.y
-        total = {x:vector.x, y:vector.y};
+        total.x = (total.x) ? total.x - vector.x : vector.x;
+        total.y = (total.y) ? total.y - vector.y : vector.y;
       });
       return total;
     },
