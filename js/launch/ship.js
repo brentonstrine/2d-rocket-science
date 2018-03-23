@@ -25,7 +25,10 @@ window.RocketScience = window.RocketScience || {};
     var y = context.cy(position.y);
     var px = context.cx(position.previous.x);
     var py = context.cy(position.previous.y);
-    if (x >= 0 && x < viewportWidth && y >= 0 && y < viewportHeight && px >= 0 && px < viewportWidth && py >= 0 && py < viewportHeight) {
+    var endPointOnscreen   = (  x >= 0 &&  x < viewportWidth &&  y >= 0 &&  y < viewportHeight);
+    var startPointOnscreen = ( px >= 0 && px < viewportWidth && py >= 0 && py < viewportHeight);
+
+    if (startPointOnscreen || endPointOnscreen) {
       return true;
     } else {
       return false;
