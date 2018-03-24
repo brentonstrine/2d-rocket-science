@@ -12,7 +12,7 @@ window.RocketScience = window.RocketScience || {};
     if(this.lastType===type && typeof this.lastTime === "object"){
       this.count++;
       this.average = (this.average + (now - this.lastTime)) / this.count;
-      console.log(type, this.average);
+      //console.log(type, this.average);
     } else {
       this.lastType = type;
     }

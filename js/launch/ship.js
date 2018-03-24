@@ -17,7 +17,7 @@ window.RocketScience = window.RocketScience || {};
 
   ship.layer.addEventListener("click", function(){
     console.log("ManualClick!");
-    tick();
+    plotBatch();
   });
 
   ship.isVisible = function(){

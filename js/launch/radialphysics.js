@@ -25,13 +25,12 @@ var nav = {
 // Planet vars
 var gravityVector = {x:null, y:null};
 var gravityForce = -1;
-var escapeVelocity = 3000;
 
 // Viewport Vars
 var planetHeight = 50000;
 var viewportWidth = 1000;// is not scaled
 var viewportHeight = 500;// is not scaled
-var viewportScale = .1;
+var viewportScale = 1;
 var viewportOffset = {}; // are not scaled (but any scalable variables used must be scaled)
   // Planet center is centered
   // viewportOffset.x = viewportWidth/2;
@@ -66,31 +65,31 @@ var thrust = {x:baseThrust*0, y:baseThrust*1, previous: zeroVector};//x=15
 // logistical vars
 var time = 0;
 var count = 0;
-var step = 20000;
+var step = 100000;
 
-function tick() {
-  //console.log(time);
-  calculateVelocity();
-  if(ship.isVisible()) {
-    ship.render();
-    //onScreenAvg.avg();
-    console.log(time, "onscreen", position.x);
-  } else {
-    //offScreenAvg.avg();
-    if(time%100===1){
-    console.log(time, "offscreen", position.x);
+
+window.plotBatch = function plotBatch() {
+  // was getting into call stack size issues due to tail recursion when using a self-referencing function. so using a loop instead.
+  for (var i = 0; i<step; i++){
+    calculateVelocity();
+    if(ship.isVisible()) {
+      ship.render();
+      onScreenAvg.avg();
+      //console.log(time, "onscreen", position.x);
+    } else {
+      offScreenAvg.avg();
+      if(time%100===1){
+      //console.log(time, "offscreen", position.x);
+      }
     }
   }
-  //console.log("onscreen : " + onScreenAvg.average + "\noffscreen: " + offScreenAvg.average);
-  if(++time%step<step-1){
-    setTimeout(tick, 0);
-  } else {
-    console.log("Click to continue.");
-    //console.log("onscreen : " + onScreenAvg.average + "\noffscreen: " + offScreenAvg.average);
-    //chance to stop and evaluate
-    //debugger;
-  }
+  time = i;
+  console.log("Click to continue.");
+  console.log("onscreen : " + onScreenAvg.average + "\noffscreen: " + offScreenAvg.average);
+  //chance to stop and evaluate
+  //debugger;
 }
+
 
 var calculateVelocity = function () {
   calculateThrust();
@@ -240,8 +239,10 @@ var rollProgram = function(altitude, velocity) {
 };
 
 
-ship.setup();
-world.setup();
-world.render();
-tick();
+document.addEventListener("DOMContentLoaded", function(event) {
+  ship.setup();
+  world.setup();
+  world.render();
+  plotBatch();
+});
 
