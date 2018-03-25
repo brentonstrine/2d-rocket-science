@@ -31,7 +31,7 @@ var gravityForce = -1;
 var planetHeight = 50000;
 var viewportWidth = 1000;// is not scaled
 var viewportHeight = 500;// is not scaled
-var viewportScale = 1;
+var viewportScale = .01;
 var viewportOffset = {}; // are not scaled (but any scalable variables used must be scaled)
   // Planet center is centered
   // viewportOffset.x = viewportWidth/2;
@@ -59,7 +59,8 @@ var baseThrust = 2.2;
 var fuel = baseThrust * 0;
 var position = {x:0, y: planetHeight + 75};
     position.previous = position;
-var startingVelocity =  225.1343073610617;
+var startingVelocity =  314.8769602565012;//225.1343073610617;
+
 var velocity = {x:startingVelocity, y:0, previous: zeroVector};
 var thrust = {x:baseThrust*0, y:baseThrust*1, previous: zeroVector};//x=15
 
@@ -191,10 +192,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
   ship.setup();
   world.setup();
   world.render();
-  //plotBatch();
-  //plotRealTime();
+  // plotBatch();
+  // plotRealTime();
 
-  var orbitalSpeed = orbitalMechanics.findOrbitalSpeed(75, 30);
+  var orbitalSpeed = orbitalMechanics.findOrbitalSpeed(75, 10);
   log(orbitalSpeed);
 });
 

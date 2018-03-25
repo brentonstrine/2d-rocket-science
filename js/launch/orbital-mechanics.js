@@ -53,7 +53,7 @@ window.RocketScience = window.RocketScience || {};
 
           if(altitude < targetAltitude - buffer) {
             console.log("L " + i + "/" + bestTime, "current: " + workingVelocity, "lastHigh:" + lastHigh + " lastLow:" +  lastLow + " d:" + difference);
-
+//if(workingVelocity <= lastLow){debugger;}
             lastLow = workingVelocity;
             reset();
 
@@ -61,14 +61,14 @@ window.RocketScience = window.RocketScience || {};
             //log(workingVelocity, lastVelocity, difference, workingVelocity===lastVelocity)
 
             if (difference === 0) {
+              //debugger;
               return workingVelocity;
-              break;
             }
 
             lastVelocity = workingVelocity;
           } else if (altitude > targetAltitude + buffer) {
             console.log("H " + i + "/" + bestTime, "current: " + workingVelocity, "lastHigh:" + lastHigh + " lastLow:" +  lastLow + " d:" + difference);
-
+//if(workingVelocity >= lastHigh){debugger;}
             lastHigh = workingVelocity;
             reset();
 
@@ -76,8 +76,8 @@ window.RocketScience = window.RocketScience || {};
             //log(workingVelocity, lastVelocity, difference, workingVelocity===lastVelocity)
 
             if (difference === 0) {
+              //debugger;
               return workingVelocity;
-              break;
             }
 
             lastVelocity = workingVelocity;

@@ -46,8 +46,8 @@ window.RocketScience = window.RocketScience || {};
         ctx.stroke();
       },
       text: function (text, x,y) {
-        ctx.font = '8px sans-serif';
-        ctx.fillText(text, cx(x), cy(y));
+        //ctx.font = '8px sans-serif';
+        //ctx.fillText(text, cx(x), cy(y));
       },
       cx: cx,
       cy: cy,
