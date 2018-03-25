@@ -8,6 +8,7 @@ var rollProgram = RocketScience.rollProgram || (function(){debugger;})();
 var ship = RocketScience.ship;
 var world = RocketScience.world;
 var renderTools = RocketScience.renderTools;
+var orbitalMechanics = RocketScience.orbitalMechanics();
 
 // Relative Directions
 var nav = {
@@ -58,42 +59,50 @@ var baseThrust = 2.2;
 var fuel = baseThrust * 0;
 var position = {x:0, y: planetHeight + 75};
     position.previous = position;
-var startingVelocity =  223.84343633173938;
+var startingVelocity =  225.1343073610617;
 var velocity = {x:startingVelocity, y:0, previous: zeroVector};
 var thrust = {x:baseThrust*0, y:baseThrust*1, previous: zeroVector};//x=15
 
 // logistical vars
 var time = 0;
 var count = 0;
-var step = 100000;
+var step = 10000;
 
 
 window.plotBatch = function plotBatch() {
   // was getting into call stack size issues due to tail recursion when using a self-referencing function. so using a loop instead.
   for (var i = 0; i<step; i++){
-    calculateVelocity();
-    if(ship.isVisible()) {
-      ship.render();
-      onScreenAvg.avg();
-      //console.log(time, "onscreen", position.x);
-    } else {
-      offScreenAvg.avg();
-      if(time%100===1){
-      //console.log(time, "offscreen", position.x);
-      }
-    }
+    plotPosition();
   }
-  time = i;
   console.log("Click to continue.");
   console.log("onscreen : " + onScreenAvg.average + "\noffscreen: " + offScreenAvg.average);
-  //chance to stop and evaluate
-  //debugger;
-}
+};
 
+window.plotPosition = function plotPosition() {
+  time++;
+  calculateVelocity();
+  if(ship.isVisible()) {
+    ship.render();
+    onScreenAvg.avg();
+    //console.log(time, "onscreen", position.x);
+  } else {
+    offScreenAvg.avg();
+    if(time%100===1){
+    //console.log(time, "offscreen", position.x);
+    }
+  }
+};
+
+
+window.plotRealTime = function plotRealTime() {
+  plotPosition();
+  setTimeout(plotRealTime, 1000);
+  time++;
+};
 
 var calculateVelocity = function () {
   calculateThrust();
-  calculateNav();
+  //calculateNav();
 
   gravityVector = v.getGravity();
 
@@ -135,67 +144,6 @@ var calculateThrust = function () {
   //   thrust.x = totalThrust * thrustAdjustment.x;
   //   thrust.y = totalThrust * thrustAdjustment.y;
   // }
-};
-/*
-var bestTime = 0;
-var lastImprovement = 0;
-var lastVelocity = startingVelocity;
-var lastHigh = startingVelocity+200;
-var lastLow = startingVelocity;
-var getHalfway = function(a,b){
-  var dist = (a-b)/2;
-  if(a-dist !== b+dist) {console.log("mismatch");}
-  var newVelocity = b+dist;
-
-  console.log(a + "/" +  b, "m:"+newVelocity, "d:"+newVelocity-lastVelocity)
-  lastVelocity = newVelocity;
-  return b+dist;
-}*/
-var calculateNav = function() {
-    count++;
-    nav.down = v.getGravity();
-    nav.up = v.getReverse(nav.down);
-    nav.clockwise = v.getStarboard(nav.up);
-    nav.anticlockwise = v.getPort(nav.up);
-    nav.prograde = v.subtract(position, position.previous);
-    nav.retrograde = v.getReverse(nav.prograde);
-
-    nav.altitude = v.getMagnitude(position) - planetHeight;
-
-    /*
-if(count > bestTime) {
-  bestTime = count;
-//  lastImprovement = 0;
-}
-// } else {
-//   lastImprovement++;
-// }
-// if(lastImprovement >=10) {
-//   tweakIncrement *= 1.01;
-// } else if (pingpong.indexOf("hlhl") !== -1) {
-//   pingpong = "";
-//   tweakIncrement *= .5;
-// }
-    if(nav.altitude < 20) {
-      console.log(count, startingVelocity, "L", bestTime, lastVelocity);
-      position = {x:0, y: planetHeight + 75};
-      position.previous = position;
-      lastLow = startingVelocity;
-      startingVelocity = getHalfway(lastHigh, lastLow);
-      velocity.x = startingVelocity;
-      velocity.y = 0
-      count = 0;
-    } else if (nav.altitude > 120) {
-      console.log(count, startingVelocity, "H", bestTime, lastVelocity);
-      position = {x:0, y: planetHeight + 75};
-      position.previous = position;
-      lastHigh = startingVelocity;
-      startingVelocity = getHalfway(lastHigh, lastLow);
-      velocity.x = startingVelocity;
-      velocity.y = 0
-      count = 0;
-    }
-    */
 };
 
 var rollProgram = function(altitude, velocity) {
@@ -243,6 +191,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
   ship.setup();
   world.setup();
   world.render();
-  plotBatch();
+  //plotBatch();
+  //plotRealTime();
+
+  var orbitalSpeed = orbitalMechanics.findOrbitalSpeed(75, 30);
+  log(orbitalSpeed);
 });
 

@@ -10,6 +10,11 @@ window.RocketScience = window.RocketScience || {};
     context.fillStyle("black");
     context.rect(-20, 0, 40, 1);
     context.rect(0, 20, 1, 40);
+
+    // draw crosshairs
+    context.fillStyle("black");
+    context.rect(-40, planetHeight + 45, 80, 1);
+    context.rect(-40, planetHeight + 105, 80, 1);
   };
 
   RocketScience.world = world;
