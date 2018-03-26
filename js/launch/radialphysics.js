@@ -31,7 +31,7 @@ var gravityForce = -1;
 var planetHeight = 50000;
 var viewportWidth = 1000;// is not scaled
 var viewportHeight = 500;// is not scaled
-var viewportScale = .01;
+var viewportScale = .1;
 var viewportOffset = {}; // are not scaled (but any scalable variables used must be scaled)
   // Planet center is centered
   // viewportOffset.x = viewportWidth/2;
@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   // plotBatch();
   // plotRealTime();
 
-  var orbitalSpeed = orbitalMechanics.findOrbitalSpeed(75, 10);
+  var orbitalSpeed = orbitalMechanics.findOrbitalSpeed(500, 10);
   log(orbitalSpeed);
 });
 
