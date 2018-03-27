@@ -4,6 +4,7 @@ window.RocketScience = window.RocketScience || {};
   var history = [];
   var dotW = 4;
   var dotH = 4;
+  var dotColor = "green";
 
   ship.render = function (){
     context.fillStyle (dotColor);
@@ -12,16 +13,18 @@ window.RocketScience = window.RocketScience || {};
 
     context.fillStyle ("black");
     context.text("T+"+time, position.x+3, position.y-3);
-
-    var moment = {
-      position: {
-        previous: position.previous,
-        x: position.x,
-        y: position.y,
-      },
-      time: time,
-    };
-    history.push(moment);
+    ship.logMoment();
+  };
+  ship.logMoment = function(){
+      var moment = {
+        position: {
+          previous: position.previous,
+          x: position.x,
+          y: position.y,
+        },
+        time: time,
+      };
+      history.push(moment);
   };
 
   ship.renderHistory = function (){
@@ -34,11 +37,6 @@ window.RocketScience = window.RocketScience || {};
       context.text("T+"+moment.time, moment.position.x+3, moment.position.y-3);
     });
   };
-
-  ship.layer.addEventListener("click", function(){
-    console.log("ManualClick!");
-    plotBatch();
-  });
 
   ship.isVisible = function(){
     var viewport = renderTools.getViewportData();
@@ -54,6 +52,10 @@ window.RocketScience = window.RocketScience || {};
     } else {
       return false;
     }
+  };
+
+  ship.setDotColor = function (color){
+    dotColor = color;
   };
 
   RocketScience.ship = ship;

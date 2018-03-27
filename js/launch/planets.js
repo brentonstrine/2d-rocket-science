@@ -3,7 +3,7 @@ window.RocketScience = window.RocketScience || {};
   RocketScience.planets = {
     green: {
       height: 50000,
-      gravity: -1,
+      gravity: -.5,
     }
   };
 }());

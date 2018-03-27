@@ -34,11 +34,11 @@ var gravityForce = planet.gravity;
 const zeroVector = {x:0, y:0};
 
 // Ship vars
-var baseThrust = 2.2;
-var fuel = baseThrust * 0;
-var position = {x:0, y: planet.height + 75};
+var baseThrust = 1;
+var fuel = baseThrust * 1000;
+var position = {x:0, y: planet.height};
     position.previous = position;
-var startingVelocity =  314.8769602565012;//225.1343073610617;
+var startingVelocity =  0;//314.8769602565012;//225.1343073610617;
 
 var velocity = {x:startingVelocity, y:0, previous: zeroVector};
 var thrust = {x:baseThrust*0, y:baseThrust*1, previous: zeroVector};//x=15
@@ -50,12 +50,14 @@ var step = 10000;
 
 
 window.plotBatch = function plotBatch() {
+  document.removeEventListener("click", plotBatch);
   // was getting into call stack size issues due to tail recursion when using a self-referencing function. so using a loop instead.
   for (var i = 0; i<step; i++){
     plotPosition();
   }
+  document.addEventListener("click", plotBatch);
+
   console.log("Click to continue.");
-  console.log("onscreen : " + onScreenAvg.average + "\noffscreen: " + offScreenAvg.average);
 };
 
 window.plotPosition = function plotPosition() {
@@ -66,18 +68,19 @@ window.plotPosition = function plotPosition() {
     onScreenAvg.avg();
     //console.log(time, "onscreen", position.x);
   } else {
+    ship.logMoment();
     offScreenAvg.avg();
     if(time%100===1){
     //console.log(time, "offscreen", position.x);
     }
   }
+  console.log(time);
 };
 
 
 window.plotRealTime = function plotRealTime() {
   plotPosition();
-  setTimeout(plotRealTime, 1000);
-  time++;
+  setTimeout(plotRealTime, 100);
 };
 
 var calculateVelocity = function () {
@@ -107,23 +110,24 @@ var calculateThrust = function () {
   // no thrust if not enough fuel
   var totalThrust = thrust.x + thrust.y;
   if (fuel > totalThrust) {
+    ship.setDotColor("green");
     fuel = fuel - totalThrust;
   } else {
-    dotColor = "red";
+    ship.setDotColor("red");
     thrust.x = 0;
     thrust.y = 0;
     return;
   }
 
-  // var thrustAdjustment = rollProgram(position.y - planet.height, velocity);
-  //
-  // if(thrustAdjustment.type === "exact") {
-  //   thrust.x = thrustAdjustment.xExact;
-  //   var percentOfMaxThrust = thrust.y / maxThrust;
-  // } else if(thrustAdjustment.type === "percent") {
-  //   thrust.x = totalThrust * thrustAdjustment.x;
-  //   thrust.y = totalThrust * thrustAdjustment.y;
-  // }
+  var thrustAdjustment = rollProgram(position.y - planet.height, velocity);
+
+  if(thrustAdjustment.type === "exact") {
+    thrust.x = thrustAdjustment.xExact;
+    var percentOfMaxThrust = thrust.y / maxThrust;
+  } else if(thrustAdjustment.type === "percent") {
+    thrust.x = totalThrust * thrustAdjustment.x;
+    thrust.y = totalThrust * thrustAdjustment.y;
+  }
 };
 
 var rollProgram = function(altitude, velocity) {
