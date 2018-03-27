@@ -1,4 +1,3 @@
-
 $("document").ready(function(){
   var currentMousePos = { x: -1, y: -1 };
   $(document).mousemove(function(event) {
@@ -27,32 +26,46 @@ $("document").ready(function(){
       pos.preventDefault();
       pos.stopPropagation();
 
-      var downL = pos.clientX || event.pageX || event.touches[0].pageX;
-      var downT = pos.clientY || event.pageY || event.touches[0].pageY;
+      var cursorX = pos.clientX || event.pageX || event.touches[0].pageX;
+      var cursorY = pos.clientY || event.pageY || event.touches[0].pageY;
       var $this = $(this);
-      // console.log($this);
-      // console.log($this.attr("style"));
-      // console.log($this.css("left"));
-      // console.log($this.css("top").replace(/[^-\d\.]/g, ''));
-      // console.log($this.css(["top", "left"]));
-      var startPos = $this.css(["top", "left"]);
-      // console.log(startPos);
-      // console.log(startPos["left"]);
-      // console.log(startPos["top"]);
-      vOffset = downT -startPos["top"].replace(/[^-\d\.]/g, '');
-      hOffset = downL - startPos["left"].replace(/[^-\d\.]/g, '');
+      var heldPartId = $this.attr("id");
+      var partPosition = $this.css(["top", "left"]);
 
-    console.log(hOffset, vOffset);
-      console.log("------------------->");
+      offsetY = cursorY - partPosition["top"].replace(/[^-\d\.]/g, '');
+      offsetX = cursorX - partPosition["left"].replace(/[^-\d\.]/g, '');
+      console.log(offsetX, offsetY);
+
+      var width = RocketScience.part.get(heldPartId).width;
+      var snapZones = RocketScience.part.getSnapZones(heldPartId);
+
       $("body").on("mousemove.partmove touchmove", function(e){
-          console.log("-movemovemovemovemove-");
+          //console.log("-movemovemovemovemove-");
           e.preventDefault();
-          var moveL = e.clientX || event.pageX || event.touches[0].pageX;
-          var moveT = e.clientY || event.pageY || event.touches[0].pageY;
-          //console.log(moveL-hOffset);
-          //console.log("mov " + (moveT-vOffset) );
-          $this.css({"left": moveL-hOffset, "top": moveT-vOffset});
+          var newPartX = e.clientX || event.pageX || event.touches[0].pageX;
+          var newPartY = e.clientY || event.pageY || event.touches[0].pageY;
+
+          newPartX -= offsetX;
+          newPartY -= offsetY;
+
+          // update part
+          RocketScience.part.update(heldPartId, {position: {x: newPartX, y: newPartY}});
+
+          snapLocation = RocketScience.part.getSnapLocation(heldPartId);
+
+          snapZones.forEach(function(zone, i){
+            var inXRange = (snapLocation.x > zone[0] && snapLocation.x < zone[1]);
+            var inYRange = (snapLocation.y > zone[2] && snapLocation.y < zone[3]);
+            if (inXRange && inYRange) {
+              //RocketScience.part.join(i, heldPartId);
+              var snappedPart = RocketScience.part.get(i);
+              newPartX = zone[4] - (width/2) ;// - offsetX;
+              newPartY = zone[5];// - offsetY;
+              RocketScience.part.update(heldPartId, {position: {x: newPartX, y: newPartY}});
+            }
+          });
       });
+
 
       $this.one("mouseup touchcancel", function(){
           $("body").off(".partmove");
@@ -64,10 +77,10 @@ $("document").ready(function(){
   //     console.group("hover");
   //     pos.preventDefault();
   //     pos.stopPropagation();
-  //     var downL = pos.clientX;
+  //     var cursorX = pos.clientX;
   //     var downT = pos.clientY;
   //     var $this = $(this);
-  //     var startPos = $this.css(["top", "left"]);
+  //     var partPosition = $this.css(["top", "left"]);
   //     debugger;
   // });
 

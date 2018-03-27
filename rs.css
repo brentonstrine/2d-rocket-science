@@ -49,7 +49,6 @@ canvas {
 
 }
 
-
 .part, .tank, .engine {
     z-index: 2;
     position: fixed;
@@ -70,6 +69,7 @@ canvas {
     overflow: hidden;
 }
 .engine {
+  padding-top: 2px;
     background-image: url(resources/engine.png);
     background-repeat-y: no-repeat;
     background-repeat-x: repeat;
@@ -100,3 +100,28 @@ canvas {
   bottom: 0;
   left: 0;
 }
+
+
+
+
+
+/*  for debugging
+.part {
+  border: dashed 1px blue;
+}
+.zone {
+  border: dashed 1px blue;
+  position: absolute;
+  background: rgba(200,100,150,.3);
+}
+
+.zoneMid {
+position: absolute;
+  background-color: red;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  margin-top: -3px;
+  border-radius: 10px;
+
+} */
