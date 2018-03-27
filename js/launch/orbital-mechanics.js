@@ -26,11 +26,11 @@ window.RocketScience = window.RocketScience || {};
     return {
       findOrbitalSpeed: function(targetAltitude, buffer){
 
-        position = {x:0, y: planetHeight + targetAltitude};
+        position = {x:0, y: planet.height + targetAltitude};
 
         var reset = function(){
           time = 0;
-          position = {x:0, y: planetHeight + targetAltitude};
+          position = {x:0, y: planet.height + targetAltitude};
           position.previous = position;
           workingVelocity = getHalfway(lastHigh, lastLow);
           velocity.x = workingVelocity;
@@ -44,7 +44,7 @@ window.RocketScience = window.RocketScience || {};
         for (var i = 0; i<step; i++){
           velocity.x = workingVelocity;
           plotPosition();
-          var altitude = v.getMagnitude(position) - planetHeight;
+          var altitude = v.getMagnitude(position) - planet.height;
           //log(altitude, position);
 
           if(i > bestTime) {
@@ -93,7 +93,7 @@ window.RocketScience = window.RocketScience || {};
           nav.anticlockwise = v.getPort(nav.up);
           nav.prograde = v.subtract(position, position.previous);
           nav.retrograde = v.getReverse(nav.prograde);
-          nav.altitude = v.getMagnitude(position) - planetHeight;
+          nav.altitude = v.getMagnitude(position) - planet.height;
       },
     };
   };

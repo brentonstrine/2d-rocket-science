@@ -9,6 +9,7 @@ var ship = RocketScience.ship;
 var world = RocketScience.world;
 var renderTools = RocketScience.renderTools;
 var orbitalMechanics = RocketScience.orbitalMechanics();
+var interface = new RocketScience.Interface();
 
 // Relative Directions
 var nav = {
@@ -23,41 +24,19 @@ var nav = {
   retrograde: {x:null, y:null, m:null},
 };
 
+
 // Planet vars
-var gravityVector = {x:null, y:null};
-var gravityForce = -1;
+var planet = RocketScience.planets["green"];
+var gravityForce = planet.gravity;
 
-// Viewport Vars
-var planetHeight = 50000;
-var viewportWidth = 1000;// is not scaled
-var viewportHeight = 500;// is not scaled
-var viewportScale = .1;
-var viewportOffset = {}; // are not scaled (but any scalable variables used must be scaled)
-  // Planet center is centered
-  // viewportOffset.x = viewportWidth/2;
-  // viewportOffset.y = viewportHeight/-2;
 
-  // 50 pixels below the surface
-  // viewportOffset.x = viewportWidth/2;
-  // viewportOffset.y = renderTools.s(planetHeight) - 50;
-
-  // Launch point is centered
-  // viewportOffset.x = viewportWidth/2;
-  // viewportOffset.y = renderTools.s(planetHeight) - viewportHeight/2;
-
-    viewportOffset.x = viewportWidth/2;
-    viewportOffset.y = renderTools.s(planetHeight) - viewportHeight/2;
-
-var dotW = 4;
-var dotH = 4;
-var dotColor = "green";
-
+// util vars
 const zeroVector = {x:0, y:0};
 
-var baseThrust = 2.2;
 // Ship vars
+var baseThrust = 2.2;
 var fuel = baseThrust * 0;
-var position = {x:0, y: planetHeight + 75};
+var position = {x:0, y: planet.height + 75};
     position.previous = position;
 var startingVelocity =  314.8769602565012;//225.1343073610617;
 
@@ -105,7 +84,7 @@ var calculateVelocity = function () {
   calculateThrust();
   //calculateNav();
 
-  gravityVector = v.getGravity();
+  var gravityVector = v.getGravity();
 
   // log current velocity
   position.previous = {x: position.x, y: position.y};
@@ -136,7 +115,7 @@ var calculateThrust = function () {
     return;
   }
 
-  // var thrustAdjustment = rollProgram(position.y - planetHeight, velocity);
+  // var thrustAdjustment = rollProgram(position.y - planet.height, velocity);
   //
   // if(thrustAdjustment.type === "exact") {
   //   thrust.x = thrustAdjustment.xExact;
@@ -189,13 +168,14 @@ var rollProgram = function(altitude, velocity) {
 
 
 document.addEventListener("DOMContentLoaded", function(event) {
+  renderTools.viewport("surface");
   ship.setup();
   world.setup();
   world.render();
   // plotBatch();
-  // plotRealTime();
+  plotRealTime();
 
-  var orbitalSpeed = orbitalMechanics.findOrbitalSpeed(500, 10);
-  log(orbitalSpeed);
+  //var orbitalSpeed = orbitalMechanics.findOrbitalSpeed(500, 10);
+  //log(orbitalSpeed);
 });
 

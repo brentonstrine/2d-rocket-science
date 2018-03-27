@@ -4,7 +4,7 @@ window.RocketScience = window.RocketScience || {};
     context = RocketScience.render(world.layer);
     // draw planet
     context.fillStyle("green");
-    context.circle(0,0,planetHeight,0,2*Math.PI);
+    context.circle(0,0,planet.height,0,2*Math.PI);
 
     // draw crosshairs
     context.fillStyle("black");
@@ -13,8 +13,14 @@ window.RocketScience = window.RocketScience || {};
 
     // draw crosshairs
     context.fillStyle("black");
-    context.rect(-40, planetHeight + 45, 80, 1);
-    context.rect(-40, planetHeight + 105, 80, 1);
+    context.rect(-40, planet.height + 45, 80, 1);
+    context.rect(-40, planet.height + 105, 80, 1);
+  };
+
+  world.clear = function (){
+    context = RocketScience.render(world.layer);
+    // draw planet
+    context.clear();
   };
 
   RocketScience.world = world;

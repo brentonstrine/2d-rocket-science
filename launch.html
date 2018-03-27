@@ -9,12 +9,25 @@
       top: 0;
     }
     .world { opacity: .5}
+    .viewport-controls {
+      position: absolute;
+      z-index: 1;
+    }
   </style>
 </head>
 <body>
 <canvas class="world"></canvas>
 <canvas class="ship"></canvas>
-<
+<div class="viewport-controls">
+  <small>Hold <key>shift</key> and:</small><br>
+  <button class="zoom-in">+</button>
+  <button class="zoom-out">-</button>
+  <button class="left">←</button>
+  <button class="up">↑</button>
+  <button class="down">↓</button>
+  <button class="right">→</button>
+</div>
+<script src="js/launch/planets.js"></script>
 <script src="js/launch/utils.js"></script>
 <script src="js/launch/performance-tracking.js"></script>
 <script src="js/launch/vector-utils.js"></script>
@@ -22,6 +35,7 @@
 <script src="js/launch/render.js"></script>
 <script src="js/launch/world.js"></script>
 <script src="js/launch/ship.js"></script>
+<script src="js/launch/interface.js"></script>
 <script src="js/launch/orbital-mechanics.js"></script>
 <script src="js/launch/radialphysics.js"></script>
 </body>
