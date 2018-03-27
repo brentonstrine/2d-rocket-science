@@ -68,9 +68,11 @@ window.RocketScience = window.RocketScience || {};
       renderTools.rerenderViewport();
     },
     rerenderViewport: function(){
-      world.clear();
       renderTools.viewport();
+      world.clear();
       world.render();
+      ship.clear();
+      ship.renderHistory();
     },
     getViewportData: function(){
       return {
@@ -127,10 +129,16 @@ window.RocketScience = window.RocketScience || {};
 
     var render = function (){};
 
+    var clear = function (){
+      context = RocketScience.render(layer);
+      context.clear();
+    };
+
     return {
       setup: setup,
       render: render,
       layer: layer,
+      clear: clear,
     };
   };
 

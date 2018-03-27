@@ -17,11 +17,5 @@ window.RocketScience = window.RocketScience || {};
     context.rect(-40, planet.height + 105, 80, 1);
   };
 
-  world.clear = function (){
-    context = RocketScience.render(world.layer);
-    // draw planet
-    context.clear();
-  };
-
   RocketScience.world = world;
 })(RocketScience.layer(document.querySelector(".world")));

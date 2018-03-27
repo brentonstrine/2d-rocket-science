@@ -1,20 +1,38 @@
 window.RocketScience = window.RocketScience || {};
 (function (ship) {
   var context = RocketScience.render(ship.layer);
+  var history = [];
+  var dotW = 4;
+  var dotH = 4;
 
   ship.render = function (){
-    var dotW = 4;
-    var dotH = 4;
     context.fillStyle (dotColor);
     context.rect(position.x-(dotW/2), position.y+(dotH/2), dotW, dotH);
     context.line(position.previous.x, position.previous.y, position.x, position.y);
 
     context.fillStyle ("black");
-    //var text = `x: ${context.cx(position.x)}, y: ${context.cx(position.y)}`;
     context.text("T+"+time, position.x+3, position.y-3);
 
-    // var text = `t+${thrust.x}, ${thrust.y}`;
-    // context.text(text, position.x+10, position.y-10);
+    var moment = {
+      position: {
+        previous: position.previous,
+        x: position.x,
+        y: position.y,
+      },
+      time: time,
+    };
+    history.push(moment);
+  };
+
+  ship.renderHistory = function (){
+    history.forEach(function(moment){
+      context.fillStyle (dotColor);
+      context.rect(moment.position.x-(dotW/2), moment.position.y+(dotH/2), dotW, dotH);
+      context.line(moment.position.previous.x, moment.position.previous.y, moment.position.x, moment.position.y);
+
+      context.fillStyle ("black");
+      context.text("T+"+moment.time, moment.position.x+3, moment.position.y-3);
+    });
   };
 
   ship.layer.addEventListener("click", function(){
