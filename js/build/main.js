@@ -27,8 +27,8 @@ $("document").ready(function(){
       pos.preventDefault();
       pos.stopPropagation();
 
-      var downL = pos.clientX;
-      var downT = pos.clientY;
+      var downL = pos.clientX || event.pageX || event.touches[0].pageX;
+      var downT = pos.clientY || event.pageY || event.touches[0].pageY;
       var $this = $(this);
       // console.log($this);
       // console.log($this.attr("style"));
@@ -39,18 +39,18 @@ $("document").ready(function(){
       // console.log(startPos);
       // console.log(startPos["left"]);
       // console.log(startPos["top"]);
-      vOffset = downT -startPos["top"].replace(/[^-\d\.]/g, '');;
-      hOffset = downL - startPos["left"].replace(/[^-\d\.]/g, '');;
+      vOffset = downT -startPos["top"].replace(/[^-\d\.]/g, '');
+      hOffset = downL - startPos["left"].replace(/[^-\d\.]/g, '');
 
     console.log(hOffset, vOffset);
       console.log("------------------->");
       $("body").on("mousemove.partmove touchmove", function(e){
-          //console.log("-movemovemovemovemove-");
+          console.log("-movemovemovemovemove-");
           e.preventDefault();
-          var moveL = e.clientX;
-          var moveT = e.clientY;
+          var moveL = e.clientX || event.pageX || event.touches[0].pageX;
+          var moveT = e.clientY || event.pageY || event.touches[0].pageY;
           //console.log(moveL-hOffset);
-          console.log("mov " + (moveT-vOffset) );
+          //console.log("mov " + (moveT-vOffset) );
           $this.css({"left": moveL-hOffset, "top": moveT-vOffset});
       });
 
@@ -88,8 +88,8 @@ $("document").ready(function(){
     }
     part.appendTo = document.querySelector(".parts");
     part.position = {
-      x: pos.clientX || pos.originalEvent.touches[0].clientX,
-      y: pos.clientY || pos.originalEvent.touches[0].clientY,
+      x: pos.pageX || event.touches[0].pageX,
+      y: pos.pageY || event.touches[0].pageY,
     },
     part.width =  0;
     part.height =  0;
@@ -110,8 +110,8 @@ $("document").ready(function(){
       e.preventDefault();
 
       // WTF. why is there an event named `event` when i explicitly named the event `e` and why when i name the event `event` does it not have the data i need?
-      var cursorX = e.pageX || event.pageX || e.clientX || event.clientX || e.originalEvent.touches[0].pageX || event.originalEvent.touches[0].pageX || e.originalEvent.touches[0].clientX || event.originalEvent.touches[0].clientX;
-      var cursorY = e.pageY|| event.pageY || e.clientY || event.clientY || e.originalEvent.touches[0].pageY || event.originalEvent.touches[0].pageY || e.originalEvent.touches[0].clientY || event.originalEvent.touches[0].clientY;
+      var cursorX = e.pageX || event.pageX || e.clientX || event.clientX || event.touches[0].pageX || e.originalEvent.touches[0].pageX || event.originalEvent.touches[0].pageX || e.originalEvent.touches[0].clientX || event.originalEvent.touches[0].clientX;
+      var cursorY = e.pageY|| event.pageY || e.clientY || event.clientY || event.touches[0].pageY || e.originalEvent.touches[0].pageY || event.originalEvent.touches[0].pageY || e.originalEvent.touches[0].clientY || event.originalEvent.touches[0].clientY;
       var partWidth = Math.abs(cursorX - beginDrag.x);
       var partHeight = Math.abs(cursorY - beginDrag.y);
 
