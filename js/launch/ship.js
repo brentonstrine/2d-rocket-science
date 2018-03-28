@@ -12,7 +12,7 @@ window.RocketScience = window.RocketScience || {};
     context.line(position.previous.x, position.previous.y, position.x, position.y);
 
     context.fillStyle ("black");
-    context.text("T+"+time, position.x+3, position.y-3);
+    //context.text("T+"+time, position.x+3, position.y-3);
     ship.logMoment();
   };
   ship.logMoment = function(){
@@ -34,7 +34,7 @@ window.RocketScience = window.RocketScience || {};
       context.line(moment.position.previous.x, moment.position.previous.y, moment.position.x, moment.position.y);
 
       context.fillStyle ("black");
-      context.text("T+"+moment.time, moment.position.x+3, moment.position.y-3);
+      //context.text("T+"+moment.time, moment.position.x+3, moment.position.y-3);
     });
   };
 

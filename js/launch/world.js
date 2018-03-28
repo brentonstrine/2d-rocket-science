@@ -24,13 +24,25 @@ window.RocketScience = window.RocketScience || {};
 
     // draw crosshairs
     context.fillStyle("black");
-    context.rect(-20, 0, 40, 1);
-    context.rect(0, 20, 1, 40);
 
-    // draw crosshairs
     context.fillStyle("black");
-    context.rect(-40, planet.height + 45, 80, 1);
-    context.rect(-40, planet.height + 105, 80, 1);
+    context.rect(-40, planet.height + 1000, 80, 1);
+    context.rect(-40, planet.height + 2000, 80, 1);
+    context.rect(-40, planet.height + 3000, 80, 1);
+    context.rect(-40, planet.height + 4000, 80, 1);
+
+
+    context.rect(-8, planet.height +  500, 4, 1);
+    context.rect(-8, planet.height + 1500, 4, 1);
+    context.rect(-8, planet.height + 2500, 4, 1);
+    context.rect(-8, planet.height + 3500, 4, 1);
+    context.rect(-8, planet.height + 4500, 4, 1);
+
+
+    context.text("1000", 50, planet.height + 1000 - 30);
+    context.text("2000", 50, planet.height + 2000 - 30);
+    context.text("3000", 50, planet.height + 3000 - 30);
+    context.text("4000", 50, planet.height + 4000 - 30);
   };
 
   RocketScience.world = world;

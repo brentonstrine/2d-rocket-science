@@ -33,7 +33,7 @@ const zeroVector = {x:0, y:0};
 
 // Ship vars
 var baseThrust = 2;
-var fuel = baseThrust * 300;
+var fuel = baseThrust * 400;
 var position = {x:0, y: planet.height};
     position.previous = position;
 var startingVelocity =  0;//314.8769602565012;//225.1343073610617;
