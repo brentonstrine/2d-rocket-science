@@ -41,15 +41,17 @@ window.RocketScience = window.RocketScience || {};
       } else if (e.keyCode == 68) { // d (starboard)
         gimbalOrder = "starboard";
       } else if (e.keyCode == 190) { // > (speed up time)
-        timewarp *= 0.8;
-        console.log(timewarp)
+        var warp = timewarp - 1;
+        warp *= 0.8;
+        updateTimewarp(warp);
       } else if (e.keyCode == 188) { // < (slow time)
-        timewarp *= 1.2;
-        console.log(timewarp)
+        var warp = timewarp + 1;
+        warp *= 1.2;
+        updateTimewarp(warp);
       }
     });
 
-    document.querySelector(".ship").addEventListener("wheel", function(e){
+    document.querySelector(".ui").addEventListener("wheel", function(e){
       if (e.shiftKey) {
         if (Math.sign(e.deltaY) === 1) {
           return renderTools.zoomOut();

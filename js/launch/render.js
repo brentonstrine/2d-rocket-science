@@ -136,6 +136,10 @@ window.RocketScience = window.RocketScience || {};
         ctx.font = '8px sans-serif';
         ctx.fillText(text, cx(x), cy(y));
       },
+      textFixed: function (text, x,y) {
+        ctx.font = '12px sans-serif';
+        ctx.fillText(text, x, y);
+      },
       clear: function() {
         ctx.clearRect(0, 0, viewportWidth, viewportHeight);
       },

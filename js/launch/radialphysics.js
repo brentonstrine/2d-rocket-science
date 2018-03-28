@@ -7,6 +7,7 @@ var offScreenAvg = new AvgType("offscreen");
 var rollProgram = RocketScience.rollProgram || (function(){debugger;})();
 var ship = RocketScience.ship;
 var world = RocketScience.world;
+var ui = RocketScience.ui;
 var renderTools = RocketScience.renderTools;
 var orbitalMechanics = RocketScience.orbitalMechanics();
 var interface = new RocketScience.Interface();
@@ -36,7 +37,7 @@ var baseThrust = 2;
 var fuel = baseThrust * 400;
 var position = {x:0, y: planet.height};
     position.previous = position;
-var startingVelocity =  0;//314.8769602565012;//225.1343073610617;
+var startingVelocity =  1;//314.8769602565012;//225.1343073610617;
 
 var velocity = {x:startingVelocity, y:0, previous: zeroVector};
 var thrust = {x:baseThrust*0, y:baseThrust*1};//x=15
@@ -47,15 +48,19 @@ var count = 0;
 var step = 10000;
 var timewarp = 100;
 
-window.plotBatch = function plotBatch() {
+window.plotBatchManual = function plotBatch() {
   document.removeEventListener("click", plotBatch);
+  plotBatch();
+  document.addEventListener("click", plotBatch);
+  console.log("Click to continue.");
+};
+
+window.plotBatch = function plotBatch() {
   // was getting into call stack size issues due to tail recursion when using a self-referencing function. so using a loop instead.
   for (var i = 0; i<step; i++){
     plotPosition();
   }
-  document.addEventListener("click", plotBatch);
-
-  console.log("Click to continue.");
+  //console.log('batch at ' + time);
 };
 
 window.plotPosition = function plotPosition() {
@@ -74,10 +79,41 @@ window.plotPosition = function plotPosition() {
   }
   //console.log(time);
 };
+window.updateTimewarp = function plotRealTime(warp) {
+  var text;
+
+  if (Math.sign(warp) === 1) {
+    if (warp > 1000) {
+      timewarp = 1000;
+    } else {
+      timewarp = Math.round(warp);
+    }
+    text = "Timewarp: " + Math.round(1000/timewarp) + "x";
+  } else if (Math.sign(warp) === 0) {
+    step = 40;
+    timewarp = warp;
+    text = "Timewarp: " + step*100 + "x"
+  } else {
+    // every 100ms, do a batch whose size increases as the negative timewarp increases
+    step = Math.round(Math.abs(warp) * 100);
+    timewarp = Math.round(warp);
+    text = "Timewarp: " + step*100 + "x";
+  }
+
+  // display warp factor in UI
+  ui.setTimewarpText(text);
+  ui.render();
+};
 
 window.plotRealTime = function plotRealTime() {
   plotPosition();
-  setTimeout(plotRealTime, timewarp);
+  if (Math.sign(timewarp) > 0) {
+    setTimeout(plotRealTime, timewarp);
+  } else {
+    // every 100ms, do a batch whose size increases as the negative timewarp increases
+    plotBatch();
+    setTimeout(plotRealTime, 100);
+  }
 };
 
 var calculateVelocity = function () {
@@ -132,7 +168,7 @@ var calculateThrust = function () {
     }
   }
   fuel = fuel - baseThrust;
-  console.log("fuel: " + fuel);
+  //console.log("fuel: " + fuel);
 
   // var thrustAdjustment = RocketScience.rollProgram(position.y - planet.height, velocity);
   //
@@ -149,8 +185,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
   renderTools.viewport("surface");
   ship.setup();
   world.setup();
+  ui.setup();
+  ui.init();
   world.render();
-  // plotBatch();
+  // plotBatchManual();
   plotRealTime();
 
   //var orbitalSpeed = orbitalMechanics.findOrbitalSpeed(500, 10);
