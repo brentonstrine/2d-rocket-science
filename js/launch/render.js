@@ -6,8 +6,8 @@ window.RocketScience = window.RocketScience || {};
   var viewportWidth = 1000; // is not scaled
   var viewportHeight = 500; // is not scaled
   var viewportOffset = {};
-  var scale = .1;
-  var adjustedOffset = {x:0, y:0};
+  var scale = .002;
+  var adjustedOffset = {x:0, y:250};
   var adjustedScale = scale;
 
   RocketScience.renderTools = {
@@ -71,10 +71,10 @@ window.RocketScience = window.RocketScience || {};
     },
     rerenderViewport: function(){
       renderTools.viewport();
-      world.clear();
-      world.render();
-      ship.clear();
-      ship.renderHistory();
+      worldLayer.clear();
+      worldLayer.render();
+      shipLayer.clear();
+      shipLayer.renderHistory();
     },
     getViewportData: function(){
       return {
@@ -113,7 +113,7 @@ window.RocketScience = window.RocketScience || {};
          grd.addColorStop(0.5, 'rgba(86, 255, 255, 1.000)');
 
          grd.addColorStop(0.51, 'rgba(250, 250, 250, 1.000)');
-         grd.addColorStop(1, 'rgba(250, 250, 250, 1.000)');
+         grd.addColorStop(1, 'rgba(250, 250, 250, .9)');
 
          // Fill with gradient
          ctx.fillStyle = grd;
@@ -148,29 +148,29 @@ window.RocketScience = window.RocketScience || {};
     };
   };
 
-  RocketScience.layer = function (layer) {
-    var setup = function () {
-      layer.setAttribute("width", viewportWidth);
-      layer.setAttribute("height", viewportHeight);
+    RocketScience.layer = function (layer) {
+      var setup = function () {
+        layer.setAttribute("width", viewportWidth);
+        layer.setAttribute("height", viewportHeight);
 
-      var viewportContainer = document.querySelector(".viewport-container");
-      viewportContainer.style.height = viewportHeight + "px";
-      viewportContainer.style.width = viewportWidth + "px";
+        var viewportContainer = document.querySelector(".viewport-container");
+        viewportContainer.style.height = viewportHeight + "px";
+        viewportContainer.style.width = viewportWidth + "px";
+      };
+
+      var render = function (){};
+
+      var clear = function (){
+        context = RocketScience.render(layer);
+        context.clear();
+      };
+
+      return {
+        setup: setup,
+        render: render,
+        layer: layer,
+        clear: clear,
+      };
     };
-
-    var render = function (){};
-
-    var clear = function (){
-      context = RocketScience.render(layer);
-      context.clear();
-    };
-
-    return {
-      setup: setup,
-      render: render,
-      layer: layer,
-      clear: clear,
-    };
-  };
 
 }());

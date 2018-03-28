@@ -37,9 +37,9 @@ window.RocketScience = window.RocketScience || {};
       } else if (e.keyCode == 40) { // down
         return renderTools.panDown();
       } else if (e.keyCode == 65) { // a (port)
-        gimbalOrder = "port";
+        ship.gimbal("port");
       } else if (e.keyCode == 68) { // d (starboard)
-        gimbalOrder = "starboard";
+        ship.gimbal("starboard");
       } else if (e.keyCode == 190) { // > (speed up time)
         var warp = timewarp - 1;
         warp *= 0.8;

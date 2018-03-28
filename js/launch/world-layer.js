@@ -45,5 +45,5 @@ window.RocketScience = window.RocketScience || {};
     context.text("4000", 50, planet.height + 4000 - 30);
   };
 
-  RocketScience.world = world;
+  RocketScience.worldLayer = world;
 })(RocketScience.layer(document.querySelector(".world")));

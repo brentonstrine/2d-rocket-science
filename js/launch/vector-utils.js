@@ -87,7 +87,7 @@ window.RocketScience = window.RocketScience || {};
       };
     },
     getGravity: function (){
-      return v.multiply(v.normalize(position),gravityForce);
+      return v.multiply(v.normalize(ship.position),planet.gravity);
     },
     hasMagnitude: function (v){
       if(v.x > 0 && v.y > 0) {

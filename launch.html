@@ -17,8 +17,9 @@
       background-color: black;
     }
     .viewport-controls {
-      position: absolute;
+      position: fixed;
       z-index: 1;
+      right: 0;
     }
     .viewport-container {
       padding: 1px;
@@ -26,7 +27,8 @@
     .instructions {
       line-height: 2em;
     }
-    .instructions key, .viewport-controls button {
+    key,
+    .viewport-controls button {
       font-family: monospace;
       border: solid 1px gray;
       border-radius: 3px;
@@ -47,12 +49,18 @@
     <canvas class="ship"></canvas>
     <canvas class="ui"></canvas>
     <div class="viewport-controls">
+      Zoom:<br>
       <button class="zoom-in">+</button>
-      <button class="zoom-out">-</button>
+      <button class="zoom-out">-</button><br>
+      <small>(Or scroll while holding <key>shift</key>.)</small><br>
+      Pan: <br>
       <button class="left">←</button>
       <button class="up">↑</button>
       <button class="down">↓</button>
-      <button class="right">→</button>
+      <button class="right">→</button><br>
+      <small>(Or scroll.)</small><br>
+      Timewarp:
+      <li><key>&lt;</key> and <key>&gt;</key> keys.</li>
     </div>
   </div>
   <div class="instructions">
@@ -78,11 +86,13 @@
   <script src="js/launch/performance-tracking.js"></script>
   <script src="js/launch/vector-utils.js"></script>
   <script src="js/launch/roll-program.js"></script>
+  <script src="js/launch/layer.js"></script>
   <script src="js/launch/render.js"></script>
-  <script src="js/launch/world.js"></script>
-  <script src="js/launch/ship.js"></script>
+  <script src="js/launch/world-layer.js"></script>
+  <script src="js/launch/ship-layer.js"></script>
   <script src="js/launch/ui-layer.js"></script>
   <script src="js/launch/interface.js"></script>
+  <script src="js/launch/ship.js"></script>
   <script src="js/launch/orbital-mechanics.js"></script>
   <script src="js/launch/radialphysics.js"></script>
 </body>
