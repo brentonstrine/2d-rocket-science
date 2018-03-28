@@ -2,18 +2,26 @@
 <html>
 <head>
   <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
     canvas {
       border: 1px solid black;
       position: fixed;
       left: 0;
       top: 0;
     }
-    .world { opacity: .999}
+    .world {
+      opacity: .999;
+      background-color: black;
+    }
     .viewport-controls {
       position: absolute;
       z-index: 1;
     }
     .viewport-container {
+      padding: 1px;
     }
     .instructions {
       line-height: 2em;

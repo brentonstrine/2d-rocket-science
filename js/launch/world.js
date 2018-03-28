@@ -22,7 +22,7 @@ window.RocketScience = window.RocketScience || {};
     //  context.fillStyle = grd;
     //  context.fillRect(0, 0, 300.000, 300.000);
 
-    // draw crosshairs
+    // draw altitude ticks
     context.fillStyle("black");
 
     context.fillStyle("black");
