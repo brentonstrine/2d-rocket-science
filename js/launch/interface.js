@@ -20,7 +20,6 @@ window.RocketScience = window.RocketScience || {};
     downBtn.addEventListener("click", renderTools.panDown);
 
     document.addEventListener("keydown", function(e){
-      console.log(e.keyCode);
       if(e.shiftKey){
         if (e.keyCode == 187) { // plus
           return renderTools.zoomIn();
@@ -42,11 +41,32 @@ window.RocketScience = window.RocketScience || {};
       } else if (e.keyCode == 68) { // d (starboard)
         gimbalOrder = "starboard";
       } else if (e.keyCode == 190) { // > (speed up time)
-        timewarp *= 1.1;
+        timewarp *= 0.8;
         console.log(timewarp)
       } else if (e.keyCode == 188) { // < (slow time)
-        timewarp *= 0.9;
+        timewarp *= 1.2;
         console.log(timewarp)
+      }
+    });
+
+    document.querySelector(".ship").addEventListener("wheel", function(e){
+      if (e.shiftKey) {
+        if (Math.sign(e.deltaY) === 1) {
+          return renderTools.zoomOut();
+        } else if (Math.sign(e.deltaY) === -1) {
+          return renderTools.zoomIn();
+        }
+      } else {
+        if (Math.sign(e.deltaY) === 1) {
+          return renderTools.panDown(e.deltaY/2);
+        } else if (Math.sign(e.deltaY) === -1) {
+          return renderTools.panUp(Math.abs(e.deltaY/2));
+        }
+        if (Math.sign(e.deltaX) === 1) {
+          return renderTools.panRight(e.deltaX/2);
+        } else if (Math.sign(e.deltaX) === -1) {
+          return renderTools.panLeft(Math.abs(e.deltaX/2));
+        }
       }
     });
   };

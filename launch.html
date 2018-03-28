@@ -4,7 +4,7 @@
   <style>
     canvas {
       border: 1px solid black;
-      position: absolute;
+      position: fixed;
       left: 0;
       top: 0;
     }
@@ -13,29 +13,52 @@
       position: absolute;
       z-index: 1;
     }
+    .viewport-container {
+    }
+    .instructions {
+    }
   </style>
 </head>
 <body>
-<canvas class="world"></canvas>
-<canvas class="ship"></canvas>
-<div class="viewport-controls">
-  <small>Hold <key>shift</key> and:</small><br>
-  <button class="zoom-in">+</button>
-  <button class="zoom-out">-</button>
-  <button class="left">←</button>
-  <button class="up">↑</button>
-  <button class="down">↓</button>
-  <button class="right">→</button>
-</div>
-<script src="js/launch/planets.js"></script>
-<script src="js/launch/utils.js"></script>
-<script src="js/launch/performance-tracking.js"></script>
-<script src="js/launch/vector-utils.js"></script>
-<script src="js/launch/roll-program.js"></script>
-<script src="js/launch/render.js"></script>
-<script src="js/launch/world.js"></script>
-<script src="js/launch/ship.js"></script>
-<script src="js/launch/interface.js"></script>
-<script src="js/launch/orbital-mechanics.js"></script>
-<script src="js/launch/radialphysics.js"></script>
+  <div class="viewport-container">
+    <canvas class="world"></canvas>
+    <canvas class="ship"></canvas>
+    <div class="viewport-controls">
+      <button class="zoom-in">+</button>
+      <button class="zoom-out">-</button>
+      <button class="left">←</button>
+      <button class="up">↑</button>
+      <button class="down">↓</button>
+      <button class="right">→</button>
+    </div>
+  </div>
+  <div class="instructions">
+    <h1>Controls</h1>
+    <h2>Viewport</h2>
+    <ul>
+      <li>Use arrow keys to pan.</li>
+      <li>Use <key>shift</key> <key>+</key> and <key>-</key> keys to zoom in and out.
+      <li>Scroll up and down to pan vertically, left and right to pan horizontally.</li>
+      <li>Hold <key>shift</key> while scrolling to zoom.</li>
+    </ul>
+    <h2>Ship</h2>
+    <ul>
+      <li>Tap <key>a</key> and <key>d</key> keys to turn port and starbord.</li>
+    </ul>
+    <h2>Universe</h2>
+    <ul>
+      <li>Tap <key>&gt;</key> and <key>&lt;</key> keys to speed or slow time.</li>
+    </ul>
+  </div>
+  <script src="js/launch/planets.js"></script>
+  <script src="js/launch/utils.js"></script>
+  <script src="js/launch/performance-tracking.js"></script>
+  <script src="js/launch/vector-utils.js"></script>
+  <script src="js/launch/roll-program.js"></script>
+  <script src="js/launch/render.js"></script>
+  <script src="js/launch/world.js"></script>
+  <script src="js/launch/ship.js"></script>
+  <script src="js/launch/interface.js"></script>
+  <script src="js/launch/orbital-mechanics.js"></script>
+  <script src="js/launch/radialphysics.js"></script>
 </body>

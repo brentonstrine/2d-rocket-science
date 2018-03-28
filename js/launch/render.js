@@ -41,23 +41,27 @@ window.RocketScience = window.RocketScience || {};
       viewportOffset.x -= adjustedOffset.x;
       viewportOffset.y -= adjustedOffset.y;
     },
-    panLeft: function() {
-      adjustedOffset.x = adjustedOffset.x - (50);
+    panLeft: function(amount) {
+      amount = amount || 50
+      adjustedOffset.x = adjustedOffset.x - amount;
       renderTools.rerenderViewport();
     },
-    panRight: function() {
-      adjustedOffset.x = adjustedOffset.x + (50);
+    panRight: function(amount) {
+      amount = amount || 50
+      adjustedOffset.x = adjustedOffset.x + amount;
       renderTools.rerenderViewport();
     },
-    panUp: function() {
-      adjustedOffset.y = adjustedOffset.y - (50);
+    panUp: function(amount) {
+      amount = amount || 50
+      adjustedOffset.y = adjustedOffset.y - amount;
       renderTools.rerenderViewport();
     },
-    panDown: function() {
-      adjustedOffset.y = adjustedOffset.y + (50);
+    panDown: function(amount) {
+      amount = amount || 50
+      adjustedOffset.y = adjustedOffset.y + amount;
       renderTools.rerenderViewport();
     },
-    zoomIn: function() {
+    zoomIn: function(factor) {
       scale *= 1.1;
       renderTools.rerenderViewport();
     },
@@ -144,6 +148,10 @@ window.RocketScience = window.RocketScience || {};
     var setup = function () {
       layer.setAttribute("width", viewportWidth);
       layer.setAttribute("height", viewportHeight);
+
+      var viewportContainer = document.querySelector(".viewport-container");
+      viewportContainer.style.height = viewportHeight + "px";
+      viewportContainer.style.width = viewportWidth + "px";
     };
 
     var render = function (){};
