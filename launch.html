@@ -16,6 +16,20 @@
     .viewport-container {
     }
     .instructions {
+      line-height: 2em;
+    }
+    .instructions key, .viewport-controls button {
+      font-family: monospace;
+      border: solid 1px gray;
+      border-radius: 3px;
+      padding: 0.05em .5em;
+      font-weight: bold;
+      color: #222;
+      box-shadow: 1px 0.5px 0px black;
+    }
+    .viewport-controls button {
+      min-width: 3em;
+      min-height: 3em;
     }
   </style>
 </head>
@@ -36,8 +50,8 @@
     <h1>Controls</h1>
     <h2>Viewport</h2>
     <ul>
-      <li>Use arrow keys to pan.</li>
-      <li>Use <key>shift</key> <key>+</key> and <key>-</key> keys to zoom in and out.
+      <li>Use <key>←</key> <key>↑</key> <key>↓</key> <key>→</key> keys to pan.</li>
+      <li>Use <key>shift</key> <key>+</key> and <key>shift</key> <key>-</key> to zoom in and out.
       <li>Scroll up and down to pan vertically, left and right to pan horizontally.</li>
       <li>Hold <key>shift</key> while scrolling to zoom.</li>
     </ul>

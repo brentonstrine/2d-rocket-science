@@ -42,22 +42,22 @@ window.RocketScience = window.RocketScience || {};
       viewportOffset.y -= adjustedOffset.y;
     },
     panLeft: function(amount) {
-      amount = amount || 50
+      amount = (amount && typeof amount === "number") ? amount : 50;
       adjustedOffset.x = adjustedOffset.x - amount;
       renderTools.rerenderViewport();
     },
     panRight: function(amount) {
-      amount = amount || 50
+      amount = (amount && typeof amount === "number") ? amount : 50;
       adjustedOffset.x = adjustedOffset.x + amount;
       renderTools.rerenderViewport();
     },
     panUp: function(amount) {
-      amount = amount || 50
+      amount = (amount && typeof amount === "number") ? amount : 50;
       adjustedOffset.y = adjustedOffset.y - amount;
       renderTools.rerenderViewport();
     },
     panDown: function(amount) {
-      amount = amount || 50
+      amount = (amount && typeof amount === "number") ? amount : 50;
       adjustedOffset.y = adjustedOffset.y + amount;
       renderTools.rerenderViewport();
     },
