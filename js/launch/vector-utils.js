@@ -89,6 +89,13 @@ window.RocketScience = window.RocketScience || {};
     getGravity: function (){
       return v.multiply(v.normalize(position),gravityForce);
     },
+    hasMagnitude: function (v){
+      if(v.x > 0 && v.y > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   };
 
 }());

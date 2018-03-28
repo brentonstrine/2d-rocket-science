@@ -24,30 +24,28 @@ var nav = {
   retrograde: {x:null, y:null, m:null},
 };
 
-
 // Planet vars
 var planet = RocketScience.planets["green"];
 var gravityForce = planet.gravity;
-
 
 // util vars
 const zeroVector = {x:0, y:0};
 
 // Ship vars
-var baseThrust = 1;
+var baseThrust = 1.3;
 var fuel = baseThrust * 1000;
 var position = {x:0, y: planet.height};
     position.previous = position;
 var startingVelocity =  0;//314.8769602565012;//225.1343073610617;
 
 var velocity = {x:startingVelocity, y:0, previous: zeroVector};
-var thrust = {x:baseThrust*0, y:baseThrust*1, previous: zeroVector};//x=15
+var thrust = {x:baseThrust*0, y:baseThrust*1};//x=15
 
 // logistical vars
 var time = 0;
 var count = 0;
 var step = 10000;
-
+var timewarp = 100;
 
 window.plotBatch = function plotBatch() {
   document.removeEventListener("click", plotBatch);
@@ -74,18 +72,18 @@ window.plotPosition = function plotPosition() {
     //console.log(time, "offscreen", position.x);
     }
   }
-  console.log(time);
+  //console.log(time);
 };
-
 
 window.plotRealTime = function plotRealTime() {
   plotPosition();
-  setTimeout(plotRealTime, 100);
+  setTimeout(plotRealTime, timewarp);
 };
 
 var calculateVelocity = function () {
   calculateThrust();
   //calculateNav();
+  //console.log(thrust);
 
   var gravityVector = v.getGravity();
 
@@ -102,9 +100,9 @@ var calculateVelocity = function () {
 
   //show position
   //console.log("x: " + renderTools.cx(position.x), "y: " + renderTools.cy(position.y));
-
 };
 
+var gimbalOrder = null;
 
 var calculateThrust = function () {
   // no thrust if not enough fuel
@@ -119,57 +117,33 @@ var calculateThrust = function () {
     return;
   }
 
-  var thrustAdjustment = rollProgram(position.y - planet.height, velocity);
-
-  if(thrustAdjustment.type === "exact") {
-    thrust.x = thrustAdjustment.xExact;
-    var percentOfMaxThrust = thrust.y / maxThrust;
-  } else if(thrustAdjustment.type === "percent") {
-    thrust.x = totalThrust * thrustAdjustment.x;
-    thrust.y = totalThrust * thrustAdjustment.y;
+  var prograde = v.subtract(position, position.previous);
+  if (gimbalOrder){
+    if (gimbalOrder === "port") {
+      thrust = v.getPort(prograde);
+    } else if (gimbalOrder === "starboard") {
+      thrust = v.getStarboard(prograde);
+    }
+    thrust = v.setMagnitude(thrust, baseThrust);
+    gimbalOrder = false;
+  } else {
+    if (v.hasMagnitude(prograde.x)) {
+      thrust = v.setMagnitude(prograde, baseThrust);
+    }
   }
-};
+  fuel = fuel - baseThrust;
+  console.log("fuel: " + fuel);
 
-var rollProgram = function(altitude, velocity) {
-
-  var climbSpeed = velocity.y;
-  var speed = velocity.x;
-
-  // returns an object containing what percent of thrust should go in the x and y direction (always needs to add to 100)
-  if (time < 1) {
-    return {y: 1, x:0, type: "percent"};
-  } else if (time < 5) {
-    return {y: 0.99, x:0.01, type: "percent"};
-  } else if (time < 10) {
-    return {y: 0.95, x:0.05, type: "percent"};
-  } else if (time < 20) {
-    return {y: 0.9, x:0.1, type: "percent"};
-  } else if (time < 30) {
-    return {y: 0.6, x:0.4, type: "percent"};
-  } else if (time < 40) {
-    return {y: 0.4, x:0.6, type: "percent"};
-  } else if (time < 120) {
-    return {y: 0.3, x:0.7, type: "percent"};
-  } else if (time < 500) {
-    return {y: 0.1, x:0.9, type: "percent"};
-  }
-  // else {
-  //   var deltaVToOrbit = escapeVelocity - speed;
-  //   if (deltaVToOrbit < baseThrust){ // if we use max thrust we will overshoot
+  // var thrustAdjustment = RocketScience.rollProgram(position.y - planet.height, velocity);
   //
-  //     // We're very close, so let's bleed off any vertical velocity (by coasting) before honing in on orbital speed
-  //     if (velocity.x > 1) {
-  //       return {xExact: 0, type: "exact"};
-  //     }
-  //     // bleed off any decimals to avoid javascript math errors
-  //     var decimals = deltaVToOrbit % 1;
-  //     var thrust = (decimals === 0) ? deltaVToOrbit : Math.floor(deltaVToOrbit/2) + decimals;
-  //
-  //     return {xExact: thrust, type: "exact"};
-  //   }
-  return {y: 0, x:1, type: "percent"};
+  // if(thrustAdjustment.type === "exact") {
+  //   thrust.x = thrustAdjustment.xExact;
+  //   var percentOfMaxThrust = thrust.y / maxThrust;
+  // } else if(thrustAdjustment.type === "percent") {
+  //   thrust.x = totalThrust * thrustAdjustment.x;
+  //   thrust.y = totalThrust * thrustAdjustment.y;
+  // }
 };
-
 
 document.addEventListener("DOMContentLoaded", function(event) {
   renderTools.viewport("surface");

@@ -6,7 +6,7 @@ window.RocketScience = window.RocketScience || {};
   var viewportWidth = 1000; // is not scaled
   var viewportHeight = 500; // is not scaled
   var viewportOffset = {};
-  var scale = 1;
+  var scale = .1;
   var adjustedOffset = {x:0, y:0};
   var adjustedScale = scale;
 
@@ -108,7 +108,7 @@ window.RocketScience = window.RocketScience || {};
          grd.addColorStop(0.000, 'rgba(127, 63, 0, 1.000)');
          grd.addColorStop(0.5, 'rgba(86, 255, 255, 1.000)');
 
-         grd.addColorStop(0.52, 'rgba(250, 250, 250, 1.000)');
+         grd.addColorStop(0.51, 'rgba(250, 250, 250, 1.000)');
          grd.addColorStop(1, 'rgba(250, 250, 250, 1.000)');
 
          // Fill with gradient

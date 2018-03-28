@@ -20,6 +20,7 @@ window.RocketScience = window.RocketScience || {};
     downBtn.addEventListener("click", renderTools.panDown);
 
     document.addEventListener("keydown", function(e){
+      console.log(e.keyCode);
       if(e.shiftKey){
         if (e.keyCode == 187) { // plus
           return renderTools.zoomIn();
@@ -36,6 +37,16 @@ window.RocketScience = window.RocketScience || {};
         return renderTools.panRight();
       } else if (e.keyCode == 40) { // down
         return renderTools.panDown();
+      } else if (e.keyCode == 65) { // a (port)
+        gimbalOrder = "port";
+      } else if (e.keyCode == 68) { // d (starboard)
+        gimbalOrder = "starboard";
+      } else if (e.keyCode == 190) { // > (speed up time)
+        timewarp *= 1.1;
+        console.log(timewarp)
+      } else if (e.keyCode == 188) { // < (slow time)
+        timewarp *= 0.9;
+        console.log(timewarp)
       }
     });
   };
