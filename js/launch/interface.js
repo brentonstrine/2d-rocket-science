@@ -20,6 +20,7 @@ window.RocketScience = window.RocketScience || {};
     downBtn.addEventListener("click", renderTools.panDown);
 
     document.addEventListener("keydown", function(e){
+      //log(e.keyCode);
       if(e.shiftKey){
         if (e.keyCode == 187) { // plus
           return renderTools.zoomIn();
@@ -40,6 +41,10 @@ window.RocketScience = window.RocketScience || {};
         ship.gimbal("port");
       } else if (e.keyCode == 68) { // d (starboard)
         ship.gimbal("starboard");
+      } else if (e.keyCode == 87) { // w (throttle up)
+        ship.throttle = 1;
+      } else if (e.keyCode == 83) { // s (throttle down)
+        ship.throttle = 0;
       } else if (e.keyCode == 190) { // > (speed up time)
         var warp = timewarp - 1;
         warp *= 0.8;

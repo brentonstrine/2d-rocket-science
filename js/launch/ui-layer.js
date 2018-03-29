@@ -8,10 +8,10 @@ window.RocketScience = window.RocketScience || {};
 
   ui.init = function (){
     updateTimewarp(timewarp);
-    ui.render();
+    ui.drawLayer();
   };
 
-  ui.render = function (){
+  ui.drawLayer = function (){
     ui.clear();
 
     // timewarp indicator

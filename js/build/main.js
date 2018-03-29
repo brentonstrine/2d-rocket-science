@@ -81,7 +81,7 @@ $("document").ready(function(){
   //     var downT = pos.clientY;
   //     var $this = $(this);
   //     var partPosition = $this.css(["top", "left"]);
-  //     debugger;
+  //     
   // });
 
 

@@ -1,20 +1,20 @@
 window.RocketScience = window.RocketScience || {};
-(function (shipLayer) {
-  var context = RocketScience.render(shipLayer.layer);
+(function (projectionLayer) {
+  var context = RocketScience.render(projectionLayer.layer);
   var history = [];
-  var dotW = 6;
-  var dotH = 6;
+  var dotW = 4;
+  var dotH = 4;
   var dotColor = "green";
 
-  shipLayer.drawLayer = function (ship){
+  projectionLayer.drawLayer = function (ship){
     context.fillStyle (dotColor);
     context.rect(ship.position.x-(dotW/2), ship.position.y+(dotH/2), dotW, dotH);
     context.strokeStyle(ship.plotLineColor);
     context.line(ship.position.previous.x, ship.position.previous.y, ship.position.x, ship.position.y);
     context.fillStyle ("black");
-    shipLayer.logMoment(ship);
+    projectionLayer.logMoment(ship);
   };
-  shipLayer.logMoment = function(ship){
+  projectionLayer.logMoment = function(ship){
       var moment = {
         position: {
           previous: ship.position.previous,
@@ -26,7 +26,7 @@ window.RocketScience = window.RocketScience || {};
       history.push(moment);
   };
 
-  shipLayer.renderHistory = function (){
+  projectionLayer.renderHistory = function (){
     history.forEach(function(moment){
       context.fillStyle (dotColor);
       context.rect(moment.position.x-(dotW/2), moment.position.y+(dotH/2), dotW, dotH);
@@ -36,7 +36,7 @@ window.RocketScience = window.RocketScience || {};
     });
   };
 
-  shipLayer.isVisible = function(){
+  projectionLayer.isVisible = function(ship){
     var viewport = renderTools.getViewportData();
     var x = context.cx(ship.position.x);
     var y = context.cy(ship.position.y);
@@ -52,9 +52,13 @@ window.RocketScience = window.RocketScience || {};
     }
   };
 
-  shipLayer.setDotColor = function (color){
+  projectionLayer.clearHistory = function (){
+    history = [];
+  };
+
+  projectionLayer.setDotColor = function (color){
     dotColor = color;
   };
 
-  RocketScience.shipLayer = shipLayer;
-})(RocketScience.layer(document.querySelector(".ship")));
+  RocketScience.projectionLayer = projectionLayer;
+})(RocketScience.layer(document.querySelector(".projections")));

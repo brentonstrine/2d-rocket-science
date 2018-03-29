@@ -47,7 +47,7 @@ var plotRocketAt = function(t) {
     fuelMass = 0;
     thrust.x = 0;
     thrust.y = 0;
-    debugger; // really, if the below works correctly, we shouldn't land here
+     // really, if the below works correctly, we shouldn't land here
   }
 
   // Adjust thrust according to roll program

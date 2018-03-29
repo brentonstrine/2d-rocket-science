@@ -1,6 +1,6 @@
 window.RocketScience = window.RocketScience || {};
 (function (world) {
-  world.render = function (){
+  world.drawLayer = function (){
     context = RocketScience.render(world.layer);
     // draw planet
     context.gradient(0,0,planet.height*2,0,2*Math.PI);

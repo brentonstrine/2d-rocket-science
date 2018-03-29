@@ -6,8 +6,8 @@ window.RocketScience = window.RocketScience || {};
   var viewportWidth = 1000; // is not scaled
   var viewportHeight = 500; // is not scaled
   var viewportOffset = {};
-  var scale = .002;
-  var adjustedOffset = {x:0, y:250};
+  var scale = .1;
+  var adjustedOffset = {x:0, y:0};
   var adjustedScale = scale;
 
   RocketScience.renderTools = {
@@ -72,7 +72,11 @@ window.RocketScience = window.RocketScience || {};
     rerenderViewport: function(){
       renderTools.viewport();
       worldLayer.clear();
-      worldLayer.render();
+      worldLayer.drawLayer();
+
+      shipLayer.clear();
+      projectionLayer.clear();
+      projectionLayer.renderHistory();
       shipLayer.clear();
       shipLayer.renderHistory();
     },
@@ -97,6 +101,9 @@ window.RocketScience = window.RocketScience || {};
       },
       fillStyle: function (style) {
         ctx.fillStyle = style;
+      },
+      strokeStyle: function (color) {
+        ctx.strokeStyle = color;
       },
       circle: function (x,y,radius,a,e) {
         ctx.beginPath();
@@ -124,12 +131,11 @@ window.RocketScience = window.RocketScience || {};
          // ctx.fill();
 
       },
-      line: function (xBegin,yBegin,xEnd,yEnd) {
-        ctx.strokeStyle = "#eeeeee";
+      line: function (xBegin,yBegin,xEnd,yEnd) {;
         ctx.beginPath();
         ctx.moveTo(cx(xBegin),cy(yBegin));
         ctx.lineTo(cx(xEnd),cy(yEnd));
-        ctx.lineWidth = s(1);
+        ctx.lineWidth = s(3);
         ctx.stroke();
       },
       text: function (text, x,y) {
@@ -158,7 +164,7 @@ window.RocketScience = window.RocketScience || {};
         viewportContainer.style.width = viewportWidth + "px";
       };
 
-      var render = function (){};
+      var drawLayer = function (){};
 
       var clear = function (){
         context = RocketScience.render(layer);
