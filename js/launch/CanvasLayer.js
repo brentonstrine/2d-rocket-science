@@ -15,7 +15,7 @@ class CanvasLayer {
     canvasElement.setAttribute("width", this.viewport.width);
     canvasElement.setAttribute("height", this.viewport.height);
     this.viewport.container.appendChild(canvasElement);
-    this.viewport.canvases.push(canvasElement);
+    this.viewport.canvases.push(this);
     return canvasElement;
   }
 

@@ -88,11 +88,11 @@ class Viewport {
 
   rerenderViewport() {
     //set viewport offsets (pan)
-    this.offset.x -= adjustedOffset.x;
-    this.offset.y -= adjustedOffset.y;
+    this.offset.x -= this.adjustedOffset.x;
+    this.offset.y -= this.adjustedOffset.y;
 
     // rerender all canvases in viewport
-    for(var canvas in this.canvases) {
+    for(var canvas of this.canvases) {
       canvas.clear();
       canvas.drawLayer();
     }

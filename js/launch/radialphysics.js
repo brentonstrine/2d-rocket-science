@@ -103,11 +103,12 @@ window.initialize2dRocketScience = function() {
 
   //create various canvas layers in viewport
   var earthLayer = new PlanetLayer(viewport);
-  var earth = new Planet("earth", earthLayer);
-
   window.actualShipLayer = new ShipLayer(viewport);
-  window.actualShip = new Ship(earth, actualShipLayer);
   window.ui = new UILayer(viewport);
+
+  //create objects associated with layers
+  var earth = new Planet("earth", earthLayer);
+  window.actualShip = new Ship(earth, actualShipLayer);
 
   // Relative Directions
   window.nav = {
@@ -136,12 +137,13 @@ window.initialize2dRocketScience = function() {
   // plotBatchManual();
 
 
-
+viewport.rerenderViewport();
   //auto-launch
   plotRealTime();
 }
 
 window.launch = function() {
+
   plotRealTime();
   //var orbitalSpeed = orbitalMechanics.findOrbitalSpeed(500, 10);
   //log(orbitalSpeed);

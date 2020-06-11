@@ -30,6 +30,8 @@ var Ship =  function (planet, layer) {
     this.layer = layer;
     this.step = 10000;
 
+    this.layer.associateShip(this);
+
     // this.init = function () {
     //   // prevent modified objects from modifying prototype parent
     //   this.position = {

@@ -8,26 +8,31 @@ class ShipLayer extends CanvasLayer {
     this.dotH = 6;
     this.dotColor = "green";
     this.plotLineColor = null;
+    this.ship = null;
   }
 
-  drawLayer(ship) {
+  associateShip(ship) {
+    this.ship = ship;
+  }
+
+  drawLayer() {
     this.fillStyle (this.dotColor);
-    this.rect(ship.position.x-(this.dotW/2), ship.position.y+(this.dotH/2), this.dotW, this.dotH);
+    this.rect(this.ship.position.x-(this.dotW/2), this.ship.position.y+(this.dotH/2), this.dotW, this.dotH);
     this.strokeStyle(this.plotLineColor);
-    this.line(ship.position.previous.x, ship.position.previous.y, ship.position.x, ship.position.y);
+    this.line(this.ship.position.previous.x, this.ship.position.previous.y, this.ship.position.x, this.ship.position.y);
     this.fillStyle ("black");
-    this.logMoment(ship);
+    this.logMoment(this.ship);
     this.renderHistory();
   }
 
-  logMoment(ship) {
+  logMoment() {
       var moment = {
         position: {
-          previous: ship.position.previous,
-          x: ship.position.x,
-          y: ship.position.y,
+          previous: this.ship.position.previous,
+          x: this.ship.position.x,
+          y: this.ship.position.y,
         },
-        time: ship.time,
+        time: this.ship.time,
       };
       this.history.push(moment);
   }
@@ -42,12 +47,12 @@ class ShipLayer extends CanvasLayer {
     }
   }
 
-  isShipVisible(ship) {
+  isShipVisible() {
     viewport = this.viewport.getViewportData();
-    var x = this.viewport.cx(ship.position.x);
-    var y = this.viewport.cy(ship.position.y);
-    var px = this.viewport.cx(ship.position.previous.x);
-    var py = this.viewport.cy(ship.position.previous.y);
+    var x = this.viewport.cx(this.ship.position.x);
+    var y = this.viewport.cy(this.ship.position.y);
+    var px = this.viewport.cx(this.ship.position.previous.x);
+    var py = this.viewport.cy(this.ship.position.previous.y);
     var endPointOnscreen   = (  x >= 0 &&  x < viewport.width &&  y >= 0 &&  y < viewport.height);
     var startPointOnscreen = ( px >= 0 && px < viewport.width && py >= 0 && py < viewport.height);
 

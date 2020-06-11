@@ -12,5 +12,7 @@ class Planet {
       this.height = planet.height;
       this.gravity = planet.gravity;
       this.layer = layer;
+      this.layer.associatePlanet(this);
   }
+
 }
