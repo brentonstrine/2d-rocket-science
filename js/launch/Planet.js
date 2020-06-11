@@ -16,3 +16,4 @@ class Planet {
   }
 
 }
+export default Planet;

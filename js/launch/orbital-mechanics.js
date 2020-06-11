@@ -1,7 +1,7 @@
-window.RocketScience = window.RocketScience || {};
+class OrbitalMechanics {
 
-(function render () {
-  RocketScience.orbitalMechanics = function () {
+  constructor() {
+    this.position = {};
     var bestTime = 0;
     var lastImprovement = 0;
     var lastVelocity = 0;
@@ -9,93 +9,91 @@ window.RocketScience = window.RocketScience || {};
     var lastHigh = 0;
     var lastLow = 0;
     var attempts = 0;
+  }
 
-    var getHalfway = function(high,low){
-      if (low === 0) {
-        return (high *= .8);
-      } else if (high === 0) {
-        return (low *= 1.2);
-      }
-
-      var dist = (high-low)/2;
-      var newVelocity = low+dist;
-
-      return newVelocity;
+  getHalfway(high,low) {
+    if (low === 0) {
+      return (high *= .8);
+    } else if (high === 0) {
+      return (low *= 1.2);
     }
 
-    return {
-      findOrbitalSpeed: function(targetAltitude, buffer){
+    var dist = (high-low)/2;
+    var newVelocity = low+dist;
 
-        position = {x:0, y: planet.height + targetAltitude};
+    return newVelocity;
+  }
 
-        var reset = function(){
-          time = 0;
-          position = {x:0, y: planet.height + targetAltitude};
-          position.previous = position;
-          workingVelocity = getHalfway(lastHigh, lastLow);
-          velocity.x = workingVelocity;
-          velocity.y = 0
-          count = 0;
-          attempts++;
-        };
+  findOrbitalSpeed(targetAltitude, buffer) {
 
-        velocity.y = 0;
+    position = {x:0, y: planet.height + targetAltitude};
 
-        for (var i = 0; i<step; i++){
-          velocity.x = workingVelocity;
-          plotPosition();
-          var altitude = v.getMagnitude(position) - planet.height;
-          //log(altitude, position);
+    var reset = function(){
+      time = 0;
+      position = {x:0, y: planet.height + targetAltitude};
+      position.previous = position;
+      workingVelocity = this.getHalfway(lastHigh, lastLow);
+      velocity.x = workingVelocity;
+      velocity.y = 0
+      count = 0;
+      attempts++;
+    };
 
-          if(i > bestTime) {
-            bestTime = i;
-          }
+    velocity.y = 0;
 
-          if(altitude < targetAltitude - buffer) {
-            console.log("L " + i + "/" + bestTime, "current: " + workingVelocity, "lastHigh:" + lastHigh + " lastLow:" +  lastLow + " d:" + difference);
+    for (var i = 0; i<step; i++){
+      velocity.x = workingVelocity;
+      plotPosition();
+      var altitude = v.getMagnitude(position) - planet.height;
+      //log(altitude, position);
+
+      if(i > bestTime) {
+        bestTime = i;
+      }
+
+      if(altitude < targetAltitude - buffer) {
+        console.log("L " + i + "/" + bestTime, "current: " + workingVelocity, "lastHigh:" + lastHigh + " lastLow:" +  lastLow + " d:" + difference);
 //if(workingVelocity <= lastLow){debugger;}
-            lastLow = workingVelocity;
-            reset();
+        lastLow = workingVelocity;
+        reset();
 
-            var difference = workingVelocity - lastVelocity;
-            //log(workingVelocity, lastVelocity, difference, workingVelocity===lastVelocity)
+        var difference = workingVelocity - lastVelocity;
+        //log(workingVelocity, lastVelocity, difference, workingVelocity===lastVelocity)
 
-            if (difference === 0) {
-              //debugger;
-              return workingVelocity;
-            }
-
-            lastVelocity = workingVelocity;
-          } else if (altitude > targetAltitude + buffer) {
-            console.log("H " + i + "/" + bestTime, "current: " + workingVelocity, "lastHigh:" + lastHigh + " lastLow:" +  lastLow + " d:" + difference);
-//if(workingVelocity >= lastHigh){debugger;}
-            lastHigh = workingVelocity;
-            reset();
-
-            var difference = workingVelocity - lastVelocity;
-            //log(workingVelocity, lastVelocity, difference, workingVelocity===lastVelocity)
-
-            if (difference === 0) {
-              //debugger;
-              return workingVelocity;
-            }
-
-            lastVelocity = workingVelocity;
-          }
+        if (difference === 0) {
+          //debugger;
+          return workingVelocity;
         }
-        return false;
-      },
-    };
 
-    RocketScience.calculateNav = function() {
-        count++;
-        nav.down = v.getGravity();
-        nav.up = v.getReverse(nav.down);
-        nav.clockwise = v.getStarboard(nav.up);
-        nav.anticlockwise = v.getPort(nav.up);
-        nav.prograde = v.subtract(position, position.previous);
-        nav.retrograde = v.getReverse(nav.prograde);
-        nav.altitude = v.getMagnitude(position) - planet.height;
-    };
-  };
-}());
+        lastVelocity = workingVelocity;
+      } else if (altitude > targetAltitude + buffer) {
+        console.log("H " + i + "/" + bestTime, "current: " + workingVelocity, "lastHigh:" + lastHigh + " lastLow:" +  lastLow + " d:" + difference);
+//if(workingVelocity >= lastHigh){debugger;}
+        lastHigh = workingVelocity;
+        reset();
+
+        var difference = workingVelocity - lastVelocity;
+        //log(workingVelocity, lastVelocity, difference, workingVelocity===lastVelocity)
+
+        if (difference === 0) {
+          //debugger;
+          return workingVelocity;
+        }
+
+        lastVelocity = workingVelocity;
+      }
+    }
+    return false;
+  }
+
+  calculateNav(){
+    count++;
+    nav.down = v.getGravity();
+    nav.up = v.getReverse(nav.down);
+    nav.clockwise = v.getStarboard(nav.up);
+    nav.anticlockwise = v.getPort(nav.up);
+    nav.prograde = v.subtract(position, position.previous);
+    nav.retrograde = v.getReverse(nav.prograde);
+    nav.altitude = v.getMagnitude(position) - planet.height;
+  }
+}

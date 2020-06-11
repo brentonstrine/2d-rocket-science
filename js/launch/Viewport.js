@@ -16,6 +16,7 @@ class Viewport {
 
     // registry of all active canvases in viewport
     this.canvases = [];
+
   }
 
   //correct the x coordinates
@@ -54,25 +55,25 @@ class Viewport {
 
   panLeft(amount) {
     amount = (amount && typeof amount === "number") ? amount : 50;
-    adjustedOffset.x = adjustedOffset.x - amount;
+    this.adjustedOffset.x = this.adjustedOffset.x - amount;
     this.rerenderViewport();
   }
 
   panRight(amount) {
     amount = (amount && typeof amount === "number") ? amount : 50;
-    adjustedOffset.x = adjustedOffset.x + amount;
+    this.adjustedOffset.x = this.adjustedOffset.x + amount;
     this.rerenderViewport();
   }
 
   panUp(amount) {
     amount = (amount && typeof amount === "number") ? amount : 50;
-    adjustedOffset.y = adjustedOffset.y - amount;
+    this.adjustedOffset.y = this.adjustedOffset.y - amount;
     this.rerenderViewport();
   }
 
   panDown(amount) {
     amount = (amount && typeof amount === "number") ? amount : 50;
-    adjustedOffset.y = adjustedOffset.y + amount;
+    this.adjustedOffset.y = this.adjustedOffset.y + amount;
     this.rerenderViewport();
   }
 
@@ -98,7 +99,7 @@ class Viewport {
     }
   }
 
-  getViewportData(){
+  getViewportData() {
     return {
       width: this.width,
       height: this.height,

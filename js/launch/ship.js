@@ -105,7 +105,7 @@ var Ship =  function (planet, layer) {
       //   if(this.thrust.y !== ship.thrust.y) {debugger;}
       // };
       this.calculateThrust();
-      //calculateNav();
+      //OrbitalMechanics.calculateNav();
       //console.log(this.thrust);
 
       var gravityVector = VectorUtils.getGravity(this.position, this.planet);
