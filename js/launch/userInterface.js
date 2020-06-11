@@ -1,7 +1,9 @@
 window.RocketScience = window.RocketScience || {};
+import RenderingTools from './RenderingTools.js';
 
-(function interface () {
-  var renderTools = RocketScience.renderTools;
+
+function userInterface () {
+  var RenderingTools = RocketScience.RenderingTools;
 
   RocketScience.Interface = function () {
     var controls = document.querySelector(".viewport-controls ")
@@ -12,31 +14,31 @@ window.RocketScience = window.RocketScience || {};
     var upBtn = controls.querySelector(".up");
     var downBtn = controls.querySelector(".down");
 
-    zoomInBtn.addEventListener("click", renderTools.zoomIn);
-    zoomOutBtn.addEventListener("click", renderTools.zoomOut);
-    leftBtn.addEventListener("click", renderTools.panLeft);
-    rightBtn.addEventListener("click", renderTools.panRight);
-    upBtn.addEventListener("click", renderTools.panUp);
-    downBtn.addEventListener("click", renderTools.panDown);
+    zoomInBtn.addEventListener("click", RenderingTools.zoomIn);
+    zoomOutBtn.addEventListener("click", RenderingTools.zoomOut);
+    leftBtn.addEventListener("click", RenderingTools.panLeft);
+    rightBtn.addEventListener("click", RenderingTools.panRight);
+    upBtn.addEventListener("click", RenderingTools.panUp);
+    downBtn.addEventListener("click", RenderingTools.panDown);
 
     document.addEventListener("keydown", function(e){
       //log(e.keyCode);
       if(e.shiftKey){
         if (e.keyCode == 187) { // plus
-          return renderTools.zoomIn();
+          return RenderingTools.zoomIn();
         } else if (e.keyCode == 189) { // minus
-          return renderTools.zoomOut();
+          return RenderingTools.zoomOut();
         }
       }
 
       if(e.keyCode == 37) { // left
-        return renderTools.panLeft();
+        return RenderingTools.panLeft();
       } else if (e.keyCode == 38) { // up
-        return renderTools.panUp();
+        return RenderingTools.panUp();
       } else if (e.keyCode == 39) { // right
-        return renderTools.panRight();
+        return RenderingTools.panRight();
       } else if (e.keyCode == 40) { // down
-        return renderTools.panDown();
+        return RenderingTools.panDown();
       } else if (e.keyCode == 65) { // a (port)
         ship.gimbal("port");
       } else if (e.keyCode == 68) { // d (starboard)
@@ -59,22 +61,24 @@ window.RocketScience = window.RocketScience || {};
     document.querySelector(".ui").addEventListener("wheel", function(e){
       if (e.shiftKey) {
         if (Math.sign(e.deltaY) === 1) {
-          return renderTools.zoomOut();
+          return RenderingTools.zoomOut();
         } else if (Math.sign(e.deltaY) === -1) {
-          return renderTools.zoomIn();
+          return RenderingTools.zoomIn();
         }
       } else {
         if (Math.sign(e.deltaY) === 1) {
-          return renderTools.panDown(e.deltaY/2);
+          return RenderingTools.panDown(e.deltaY/2);
         } else if (Math.sign(e.deltaY) === -1) {
-          return renderTools.panUp(Math.abs(e.deltaY/2));
+          return RenderingTools.panUp(Math.abs(e.deltaY/2));
         }
         if (Math.sign(e.deltaX) === 1) {
-          return renderTools.panRight(e.deltaX/2);
+          return RenderingTools.panRight(e.deltaX/2);
         } else if (Math.sign(e.deltaX) === -1) {
-          return renderTools.panLeft(Math.abs(e.deltaX/2));
+          return RenderingTools.panLeft(Math.abs(e.deltaX/2));
         }
       }
     });
   };
-}());
+};
+
+export default userInterface;

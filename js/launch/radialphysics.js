@@ -1,42 +1,24 @@
 window.RocketScience = window.RocketScience || {};
 
-var v = RocketScience.vector || (function(){})();
-var AvgType = RocketScience.PerformanceTracking || (function(){})();
-var onScreenAvg = new AvgType("onscreen");
-var offScreenAvg = new AvgType("offscreen");
-var rollProgram = RocketScience.rollProgram || (function(){})();
-var shipLayer = RocketScience.shipLayer;
-var worldLayer = RocketScience.worldLayer;
-var projectionLayer = RocketScience.projectionLayer;
-var ui = RocketScience.ui;
-var renderTools = RocketScience.renderTools;
-var orbitalMechanics = RocketScience.orbitalMechanics();
-var interface = new RocketScience.Interface();
+//var v = RocketScience.vector || (function(){})();
 
-// Relative Directions
-var nav = {
-  // planet-relative
-  down: {x:null, y:null, m:null,},
-  up: {x:null, y:null, m:null,},
-  clockwise: {x:null, y:null, m:null,},
-  anticlockwise: {x:null, y:null, m:null,},
+import Viewport from './Viewport.js';
+import Ship from './ship.js';
+import ShipLayer from './ShipLayer.js';
+import PlanetLayer from './PlanetLayer.js';
+import UILayer from './UILayer.js';
+import userInterface from './userInterface.js';
+// window.AvgType = RocketScience.PerformanceTracking || (function(){})();
+// window.onScreenAvg = new AvgType("onscreen");
+// window.offScreenAvg = new AvgType("offscreen");
+// window.rollProgram = RocketScience.rollProgram || (function(){})();
+//window.projectionLayer = RocketScience.projectionLayer;
+//var projectionPrograde = new RocketScience.Ship(planet); // I think this was a projection to show what would happen if you moved prograde at a given instant
+window.orbitalMechanics = RocketScience.orbitalMechanics();
 
-  // ship-relative
-  prograde: {x:null, y:null, m:null},
-  retrograde: {x:null, y:null, m:null},
-};
-
-// instantiate important objects
-var planet = new RocketScience.Planet("green");
-var ship = new RocketScience.Ship(planet);
-//var projectionPrograde = new RocketScience.Ship(planet);
-
-
-// logistical vars
-var count = 0;
-var timewarp = 100;
 
 window.plotBatchManual = function plotBatch() {
+  debugger;
   document.removeEventListener("click", plotBatch);
   plotBatch();
   document.addEventListener("click", plotBatch);
@@ -63,12 +45,12 @@ window.plotBatchManual = function plotBatch() {
 //   // log(ship.position);
 //   // log(projectionPrograde.position);
 //
-//   if(shipLayer.isVisible()) {
-//     shipLayer.drawLayer(ship);
+//   if(this.layer.isShipVisible()) {
+//     this.layer.drawLayer(ship);
 //     onScreenAvg.avg();
 //     //console.log(ship.time, "onscreen", position.x);
 //   } else {
-//     shipLayer.logMoment(ship);
+//     this.layer.logMoment(ship);
 //     offScreenAvg.avg();
 //     if(ship.time%100===1){
 //     //console.log(ship.time, "offscreen", position.x);
@@ -77,24 +59,25 @@ window.plotBatchManual = function plotBatch() {
 //
 //   //console.log(ship.time);
 // };
-window.updateTimewarp = function plotRealTime(warp) {
+
+window.updateTimewarp = function updateTimewarp(warp) {
   var text;
 
   if (Math.sign(warp) === 1) {
     if (warp > 1000) {
-      timewarp = 1000;
+      window.timewarp = 1000;
     } else {
-      timewarp = Math.round(warp);
+      window.timewarp = Math.round(warp);
     }
-    text = "Timewarp: " + Math.round(1000/timewarp) + "x";
+    text = "Timewarp: " + Math.round(1000/window.timewarp) + "x";
   } else if (Math.sign(warp) === 0) {
     ship.step = 40;
-    timewarp = warp;
+    window.timewarp = warp;
     text = "Timewarp: " + ship.step*100 + "x"
   } else {
     // every 100ms, do a batch whose size increases as the negative timewarp increases
     ship.step = Math.round(Math.abs(warp) * 100);
-    timewarp = Math.round(warp);
+    window.timewarp = Math.round(warp);
     text = "Timewarp: " + ship.step*100 + "x";
   }
 
@@ -104,28 +87,65 @@ window.updateTimewarp = function plotRealTime(warp) {
 };
 
 window.plotRealTime = function plotRealTime() {
-  ship.plotPosition();
-  if (Math.sign(timewarp) > 0) {
-    setTimeout(plotRealTime, timewarp);
+  window.actualShip.plotPosition();
+  if (Math.sign(window.timewarp) > 0) {
+    setTimeout(window.plotRealTime, window.timewarp);
   } else {
     // every 100ms, do a batch whose size increases as the negative timewarp increases
     ship.plotBatch();
-    setTimeout(plotRealTime, 100);
+    setTimeout(window.plotRealTime, 100);
   }
 };
 
-document.addEventListener("DOMContentLoaded", function(event) {
-  renderTools.viewport("surface");
-  shipLayer.setup();
-  projectionLayer.setup();
-  worldLayer.setup();
-  ui.setup();
-  ui.init();
-  worldLayer.drawLayer();
-  // plotBatchManual();
-  plotRealTime();
+window.initialize2dRocketScience = function() {
+  //create a viewport to use
+  window.viewport = new Viewport();
 
+  //create various canvas layers in viewport
+  var earthLayer = new PlanetLayer(viewport);
+  var earth = new Planet("earth", earthLayer);
+
+  window.actualShipLayer = new ShipLayer(viewport);
+  window.actualShip = new Ship(earth, actualShipLayer);
+  window.ui = new UILayer(viewport);
+
+  // Relative Directions
+  window.nav = {
+    // planet-relative
+    down: {x:null, y:null, m:null,},
+    up: {x:null, y:null, m:null,},
+    clockwise: {x:null, y:null, m:null,},
+    anticlockwise: {x:null, y:null, m:null,},
+
+    // ship-relative
+    prograde: {x:null, y:null, m:null},
+    retrograde: {x:null, y:null, m:null},
+  };
+
+  // logistical vars
+  window.count = 0;//what are we counting?
+  window.timewarp = 100;
+
+  window.viewport.panTo(earth, "surface");
+  //ShipLayer.setup();
+  //projectionLayer.setup();
+  //worldLayer.setup();
+  //ui.setup();
+  ui.init();
+  //worldLayer.drawLayer();
+  // plotBatchManual();
+
+
+
+  //auto-launch
+  plotRealTime();
+}
+
+window.launch = function() {
+  plotRealTime();
   //var orbitalSpeed = orbitalMechanics.findOrbitalSpeed(500, 10);
   //log(orbitalSpeed);
-});
+}
 
+//initialize on load
+document.addEventListener("DOMContentLoaded", initialize2dRocketScience());

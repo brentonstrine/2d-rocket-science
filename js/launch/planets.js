@@ -1,15 +1,16 @@
-window.RocketScience = window.RocketScience || {};
-(function () {
-  var planets = {
-    green: {
-      height: 50000,
-      gravity: -1,
-    }
-  };
+class Planet {
+  constructor(name, layer) {
 
-  RocketScience.Planet = function (name) {
-    var planet = planets[name];
-    this.height = planet.height;
-    this.gravity = planet.gravity;
+      var planets = {
+        earth: {
+          height: 50000,
+          gravity: -1,
+        }
+      };
+
+      var planet = planets[name];
+      this.height = planet.height;
+      this.gravity = planet.gravity;
+      this.layer = layer;
   }
-}());
+}
