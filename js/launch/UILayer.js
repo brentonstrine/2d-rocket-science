@@ -64,7 +64,7 @@ class UILayer extends CanvasLayer {
     zoomOutBtn.addEventListener("click", function(){this.viewport.zoomOut();}.bind(this));
     leftBtn.addEventListener("click", function(){this.viewport.panLeft();}.bind(this));
     rightBtn.addEventListener("click", function(){this.viewport.panRight();}.bind(this));
-    upBtn.addEventListener("click", function(){this.viewport.panUp().bind(this);});
+    upBtn.addEventListener("click", function(){this.viewport.panUp();}.bind(this));
     downBtn.addEventListener("click", function(){this.viewport.panDown();}.bind(this));
 
     document.addEventListener("keydown", function(e){
@@ -107,9 +107,9 @@ class UILayer extends CanvasLayer {
     this.canvasElement.addEventListener("wheel", function(e){
       if (e.shiftKey) {
         if (Math.sign(e.deltaY) === 1) {
-          return this.viewport.panzoomOut();
+          return this.viewport.zoomOut(0.99);
         } else if (Math.sign(e.deltaY) === -1) {
-          return this.viewport.panzoomIn();
+          return this.viewport.zoomIn(1.01);
         }
       } else {
         if (Math.sign(e.deltaY) === 1) {
@@ -123,7 +123,7 @@ class UILayer extends CanvasLayer {
           return this.viewport.panLeft(Math.abs(e.deltaX/2));
         }
       }
-    });
+    }.bind(this));
   };
 
 }

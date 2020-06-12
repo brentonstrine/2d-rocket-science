@@ -6,7 +6,6 @@ class Viewport {
     this.height = 500; // is not scaled
     this.offset = {x: 0, y: 0};//how far from the default the viewport is panned, a.k.a., where we're looking.
     this.scale = .1;
-    this.adjustedOffset = {x:0, y:0};
     //this.adjustedScale = this.scale; //not sure what this was but it's not being used
 
     // set up DOM element
@@ -38,6 +37,10 @@ class Viewport {
         // center on ship
         this.offset.x = object.position.x;
         this.offset.y = object.position.y;
+      } else if(object.type === "cursor") {
+        // center on ship
+        this.offset.x = object.x;
+        this.offset.y = object.y;
       } else if (location === "center") {
         // Planet center is centered
         this.offset.x = this.width/2;
@@ -55,42 +58,44 @@ class Viewport {
 
   panLeft(amount) {
     amount = (amount && typeof amount === "number") ? amount : 50;
-    this.adjustedOffset.x = this.adjustedOffset.x - amount;
+    this.offset.x += amount;
     this.rerenderViewport();
   }
 
   panRight(amount) {
     amount = (amount && typeof amount === "number") ? amount : 50;
-    this.adjustedOffset.x = this.adjustedOffset.x + amount;
+    this.offset.x -= amount;
     this.rerenderViewport();
   }
 
   panUp(amount) {
     amount = (amount && typeof amount === "number") ? amount : 50;
-    this.adjustedOffset.y = this.adjustedOffset.y - amount;
+    this.offset.y += amount;
     this.rerenderViewport();
   }
 
   panDown(amount) {
     amount = (amount && typeof amount === "number") ? amount : 50;
-    this.adjustedOffset.y = this.adjustedOffset.y + amount;
+    this.offset.y -= amount;
     this.rerenderViewport();
   }
 
-  zoomIn(factor) {
-    this.scale *= 1.1;
+  zoomIn(factor, cursor) {
+    factor = factor || 1.1;
+    this.scale *= factor;
     this.rerenderViewport();
+
   }
 
-  zoomOut() {
-    this.scale *= 0.9;
+  zoomOut(factor, cursor) {
+    factor = factor || 0.9;
+    this.scale *= factor;
     this.rerenderViewport();
+
   }
 
   rerenderViewport() {
     //set viewport offsets (pan)
-    this.offset.x -= this.adjustedOffset.x;
-    this.offset.y -= this.adjustedOffset.y;
 
     // rerender all canvases in viewport
     for(var canvas of this.canvases) {
