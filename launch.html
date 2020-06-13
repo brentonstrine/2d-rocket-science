@@ -5,12 +5,15 @@
     body {
       padding: 0;
       margin: 0;
+      overscroll-behavior: none;
     }
     canvas {
       border: 1px solid black;
       position: fixed;
       left: 0;
       top: 0;
+
+      overscroll-behavior: none;
     }
     .world {
       opacity: .999;
@@ -20,12 +23,39 @@
       position: fixed;
       z-index: 1;
       right: 0;
+      padding: 0 1em;
+      overscroll-behavior: none;
     }
     .viewport-container {
+      position: fixed;
+      top: 0;
+      left: 0;
       padding: 1px;
+      overscroll-behavior: none;
+    }
+    .keyboard-controls {
+      line-height: 2em;
     }
     .instructions {
-      line-height: 2em;
+      border: solid 1px grey;
+      overflow-y: scroll;
+      height: 250px;
+      width: 250px;
+      margin: 0;
+
+    }
+    .keyboard-controls h1 {
+      margin: 0;
+      font-size: 1em;
+    }
+    .instructions h2,
+    .instructions h3,
+    .instructions p {
+      margin: 0 1em;
+      font-size: 1em;
+    }
+    .instructions ul {
+      margin: 0;
     }
     key,
     .viewport-controls button {
@@ -60,25 +90,29 @@
       <li><key>&lt;</key> and <key>&gt;</key> keys.</li>
       <hr>
       <button onclick="window.launch()">Launch!</button>
+
+      <div class="keyboard-controls">
+        <h1>Keyboard Controls</h1>
+        <div class="instructions">
+          <h2>Viewport</h2>
+          <ul>
+            <li>Use <key>←</key> <key>↑</key> <key>↓</key> <key>→</key> keys to pan.</li>
+            <li>Use <key>shift</key> <key>+</key> and <key>shift</key> <key>-</key> to zoom in and out.
+            <li>Scroll up and down to pan vertically, left and right to pan horizontally.</li>
+            <li>Hold <key>shift</key> while scrolling to zoom.</li>
+          </ul>
+          <h2>Ship</h2>
+          <ul>
+            <li>Tap <key>a</key> and <key>d</key> keys to turn port and starbord.</li>
+          </ul>
+          <h2>Universe</h2>
+          <ul>
+            <li>Tap the <key>&lt;</key> and <key>&gt;</key> keys to speed or slow time.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="instructions">
-    <h1>Controls</h1>
-    <h2>Viewport</h2>
-    <ul>
-      <li>Use <key>←</key> <key>↑</key> <key>↓</key> <key>→</key> keys to pan.</li>
-      <li>Use <key>shift</key> <key>+</key> and <key>shift</key> <key>-</key> to zoom in and out.
-      <li>Scroll up and down to pan vertically, left and right to pan horizontally.</li>
-      <li>Hold <key>shift</key> while scrolling to zoom.</li>
-    </ul>
-    <h2>Ship</h2>
-    <ul>
-      <li>Tap <key>a</key> and <key>d</key> keys to turn port and starbord.</li>
-    </ul>
-    <h2>Universe</h2>
-    <ul>
-      <li>Tap the <key>&lt;</key> and <key>&gt;</key> keys to speed or slow time.</li>
-    </ul>
-  </div>
+
   <script src="js/launch/radialphysics.js" type="module"></script>
 </body>

@@ -176,7 +176,7 @@ function crash(dot, reason){
     showFinalStats(time);
 }
 function convertToXPos(x){
-  return ((x * -1) / 1) + worldHeight;
+  return (-x / 1) + worldHeight;
 }
 const yScale = 1;
 function convertToYPos(y){
@@ -203,7 +203,7 @@ var heightGain = 0;
 var showFlightStats = function(t) {
   console.group("T+" + time);
   console.log("Fuel    : ", fuelMass);
-  console.log("TWR     : ", thrust.x/(weight*-1));
+  console.log("TWR     : ", thrust.x / -weight);
 
   console.log("V-Height   : ", position.x);
   console.log("V-Thrust   : ", thrust.x);
@@ -228,7 +228,7 @@ var showFlightStats = function(t) {
 var showFinalStats = function(t) {
 console.log("==============");
   console.log("Fuel    : ", fuelMass);
-  console.log("TWR     : ", thrust.x/(weight*-1));
+  console.log("TWR     : ", thrust.x / -weight);
   console.log("Velocity: ", velocity.x);
   console.log("Height  : ", position.x);
   console.log("Highest point reached  : ", maxHeight);

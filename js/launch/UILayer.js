@@ -19,6 +19,24 @@ class UILayer extends CanvasLayer {
 
     // timewarp indicator
     this.textFixed(this.timewarpText, viewport.width - 100, viewport.height - 10);
+
+    let debugMode = false;
+    if (debugMode) {
+      let x = Math.round(this.viewport.offset.x).toLocaleString('en');
+      let y = Math.round(this.viewport.offset.y).toLocaleString('en');
+      let offsetText = `${x}px, ${y}px`;
+      this.textFixed(offsetText, viewport.width - 100, viewport.height - 25);
+
+      let d = this.viewport.getViewportAbsoluteLocation();
+      let pdx = Math.round(d.x).toLocaleString('en');
+      let pdy = Math.round(d.y).toLocaleString('en');
+
+      let distanceText = `d: ${pdx}px, ${pdy}px`;
+      this.textFixed(distanceText, viewport.width - 115, viewport.height - 40);
+
+      this.textFixed("viewport center", 600, 270);
+      this.fillStyle ("red");
+    }
   }
 
   setTimewarpText(text) {
@@ -76,7 +94,6 @@ class UILayer extends CanvasLayer {
           return this.viewport.zoomOut();
         }
       }
-
       if(e.keyCode == 37) { // left
         return this.viewport.panLeft();
       } else if (e.keyCode == 38) { // up

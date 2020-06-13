@@ -73,12 +73,12 @@ var VectorUtils = {
   getStarboard: function (vector) {
     return {
       x: vector.y,
-      y: vector.x * -1,
+      y: -vector.x,
     };
   },
   getPort: function (vector) {
     return {
-      x: vector.y * -1,
+      x: -vector.y,
       y: vector.x,
     };
   },
