@@ -16,14 +16,8 @@ import UILayer from './UILayer.js';
 //var projectionPrograde = new RocketScience.Ship(planet); // I think this was a projection to show what would happen if you moved prograde at a given instant
 //window.orbitalMechanics = RocketScience.orbitalMechanics();
 
+let timediff = new Date();
 
-window.plotBatchManual = function plotBatch() {
-  debugger;
-  document.removeEventListener("click", plotBatch);
-  plotBatch();
-  document.addEventListener("click", plotBatch);
-  console.log("Click to continue.");
-};
 
 // window.plotBatch = function plotBatch() {
 //   // was getting into call stack size issues due to tail recursion when using a self-referencing function. so using a loop instead.
@@ -101,20 +95,25 @@ window.initialize2dRocketScience = function() {
 
   viewport.rerenderViewport();
   //auto-launch
-  livePlot(actualShip, ui);
+
+  console.log("myPlanet ",actualShip.planet)
+  //actualShip.plotBatchManual();
+  plotOnTheFly(actualShip, ui);
 }
 
-function livePlot(actualShip, ui) {
-  actualShip.plotPosition();
-
+function plotOnTheFly(actualShip, ui) {
+  // set how frequently we replot and whether that's a single plot or a batch plot
+  // some of this logic is very similar to UILayer::updateTimewarp(), but
   if (Math.sign(ui.timewarp) > 0) {
-    //timewarp is positive!
-    setTimeout(function(){livePlot(actualShip, ui)}, ui.timewarp);
+    actualShip.drawPosition();
+    setTimeout(function(){plotOnTheFly(actualShip, ui)}, ui.timewarp);// smaller values of timewarp are "faster" time because timewarp is how often the timeout repeats
   } else {
-    debugger;//timewarp is negative. hao this happen?
-    // every 100ms, do a batch whose size increases as the negative timewarp increases
+    // when timewarp is below 1 (1ms) then we start doing a batch of plots each repeat instead of only plotting a single move each repeat
     actualShip.plotBatch();
-    setTimeout(function(){livePlot(actualShip, ui)}, 100);
+    setTimeout(function(){plotOnTheFly(actualShip, ui)}, 10);
+    let now = new Date();
+    console.log("Batchplot!", now - timediff, "ms");
+    timediff = now;
   }
 };
 

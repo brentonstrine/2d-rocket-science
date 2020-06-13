@@ -9,6 +9,7 @@ class UILayer extends CanvasLayer {
   }
 
   init(){
+    if(this.timewarp>3500 || this.timewarp===0 || this.timewarp<0) { debugger; }
     this.updateTimewarp(this.timewarp);
     this.drawLayer();
     this.initControls();
@@ -45,6 +46,8 @@ class UILayer extends CanvasLayer {
 
   updateTimewarp(warp) {
     var text;
+
+    // Note: counterintuitively, smaller values of `this.timewarp` mean warping through time faster, since this is the "timeout" interval
 
     if (Math.sign(warp) === 1) {
       if (warp > 1000) {
@@ -87,28 +90,25 @@ class UILayer extends CanvasLayer {
 
     document.addEventListener("keydown", function(e){
       //log(e.keyCode);
-      if(e.shiftKey){
-        if (e.keyCode == 187) { // plus
-          return this.viewport.zoomIn();
-        } else if (e.keyCode == 189) { // minus
-          return this.viewport.zoomOut();
-        }
-      }
-      if(e.keyCode == 37) { // left
+      if (e.keyCode == 187) {        // plus
+        return this.viewport.zoomIn();
+      } else if (e.keyCode == 189) { // minus
+        return this.viewport.zoomOut();
+      } else if(e.keyCode == 37) {   // left arrow
         return this.viewport.panLeft();
-      } else if (e.keyCode == 38) { // up
+      } else if (e.keyCode == 38) {  // up arrow
         return this.viewport.panUp();
-      } else if (e.keyCode == 39) { // right
+      } else if (e.keyCode == 39) {  // right arrow
         return this.viewport.panRight();
-      } else if (e.keyCode == 40) { // down
+      } else if (e.keyCode == 40) {  // down arrow
         return this.viewport.panDown();
-      } else if (e.keyCode == 65) { // a (port)
+      } else if (e.keyCode == 65) {  // a (port)
         this.ship.gimbal("port");
-      } else if (e.keyCode == 68) { // d (starboard)
+      } else if (e.keyCode == 68) {  // d (starboard)
         this.ship.gimbal("starboard");
-      } else if (e.keyCode == 87) { // w (throttle up)
+      } else if (e.keyCode == 87) {  // w (throttle up)
         this.ship.throttle = 1;
-      } else if (e.keyCode == 83) { // s (throttle down)
+      } else if (e.keyCode == 83) {  // s (throttle down)
         this.ship.throttle = 0;
       } else if (e.keyCode == 190) { // > (speed up time)
         var warp = this.timewarp - 1;

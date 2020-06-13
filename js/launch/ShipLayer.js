@@ -21,7 +21,7 @@ class ShipLayer extends CanvasLayer {
     this.strokeStyle(this.plotLineColor);
     this.line(this.ship.position.previous.x, this.ship.position.previous.y, this.ship.position.x, this.ship.position.y);
     this.fillStyle ("black");
-    this.logMoment(this.ship);
+    //this.logMoment(this.ship); think this should be done elsewhere
     this.renderHistory();
   }
 

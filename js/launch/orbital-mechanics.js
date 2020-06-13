@@ -43,7 +43,8 @@ class OrbitalMechanics {
 
     for (var i = 0; i<step; i++){
       velocity.x = workingVelocity;
-      plotPosition();
+      debugger;// i think this won't work.
+      drawPosition();//possibly drawPosition()?
       var altitude = v.getMagnitude(position) - planet.height;
       //log(altitude, position);
 
