@@ -45,15 +45,15 @@ class CanvasLayer {
      var grd = this.ctx.createRadialGradient(this.viewport.cx(x),this.viewport.cy(y),this.viewport.s(0),this.viewport.cx(x),this.viewport.cy(y),this.viewport.s(r));
 
      // Add colors
-     grd.addColorStop(0.000, 'rgba(127, 63, 0, 1.000)');
-     grd.addColorStop(0.5, 'rgba(86, 255, 255, 1.000)');
+     grd.addColorStop(0.000, 'rgba(127, 63, 0, 1)');
+     grd.addColorStop(0.5, 'rgba(86, 255, 255, 1)');
 
-     grd.addColorStop(0.51, 'rgba(250, 250, 250, 1.000)');
-     grd.addColorStop(1, 'rgba(250, 250, 250, .9)');
+     grd.addColorStop(0.51, 'rgba(250, 250, 250, 1)');
+     grd.addColorStop(1, 'rgba(0, 0, 0, 1)');
 
      // Create a rectangle and fill it with the gradient
      this.ctx.fillStyle = grd;
-     this.ctx.fillRect(5,5,1000,500);//absolute values here, e.g. viewport pixels
+     this.ctx.fillRect(0,0,this.viewport.width, this.viewport.height);//absolute values here, e.g. viewport pixels
 
      // this.ctx.beginPath();
      // this.ctx.arc(this.viewport.cx(x),this.viewport.cy(y),this.viewport.s(radius),a,e);
