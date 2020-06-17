@@ -19,7 +19,7 @@ class PlanetLayer extends CanvasLayer {
 
   drawLayer() {
     // draw planet
-    this.gradient(0,0,this.planet.height*2,0,2*Math.PI);
+    this.gradient(0,0,this.planet.height);
 
     this.fillStyle("green");
     this.circle(0,0,this.planet.height,0,2*Math.PI);
