@@ -5,7 +5,7 @@ class PlanetLayer extends CanvasLayer {
     super(viewport);
     this.canvasElement.setAttribute("id", "planet-layer");
     this.planet = planet;
-    this.showCrosshairs = false;
+    this.showCrosshairs = true;
     if(this.showCrosshairs) {
       this.once = true;
       this.crosshairs = [];
@@ -18,8 +18,9 @@ class PlanetLayer extends CanvasLayer {
   }
 
   drawLayer() {
+
     // draw planet
-    this.gradient(0,0,this.planet.height);
+    this.gradient(0,0,this.planet.height*2);
 
     this.fillStyle("green");
     this.circle(0,0,this.planet.height,0,2*Math.PI);
@@ -59,21 +60,26 @@ class PlanetLayer extends CanvasLayer {
     this.text("4000", 50, this.planet.height + 4000 - 30);
 
     if(this.showCrosshairs) {
+      let centeringOffsetX = (window.screen.availWidth/2)
+      let centeringOffsetY = (window.screen.availHeight/2)
       this.fillStyle("purple");
       let z = {
-        x: -( (1/this.viewport.scale) * (this.viewport.offset.x - 500) ),
-        y:  ( (1/this.viewport.scale) * (this.viewport.offset.y + 250) ),
+        x: -( (1/this.viewport.scale) * (this.viewport.offset.x - centeringOffsetX) ),
+        y:  ( (1/this.viewport.scale) * (this.viewport.offset.y + centeringOffsetY) ),
       }
       this.rect(z.x - 400, z.y, 800, 1);
       this.rect(z.x, z.y + 400, 1, 800);
       const fillStyles = ["green", "red", "blue", "pink", "yellow"]
-      if(this.once) {
-        this.crosshairs.push({
-          x: -(this.viewport.offset.x - 500),
-          y: this.viewport.offset.y + 250
-        });
-        this.once = false;
-      }
+      // if(this.once) {
+      //
+      //
+      //
+      //   this.crosshairs.push({
+      //     x: -(this.viewport.offset.x - centeringOffsetX),
+      //     y: this.viewport.offset.y + centeringOffsetY,
+      //   });
+      //   this.once = false;
+      // }
       let a = 0;
       for(var crosshair of this.crosshairs) {
         this.fillStyle(fillStyles[a]);

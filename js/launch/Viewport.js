@@ -2,8 +2,8 @@ import ShipLayer from './ShipLayer.js';
 
 class Viewport {
   constructor () {
-    this.width = 1000; // is not scaled
-    this.height = 500; // is not scaled
+    this.width = window.screen.availWidth; // is not scaled
+    this.height = window.screen.availHeight; // is not scaled
     this.offset = {x: 0, y: 0};//how far from the default the viewport is panned, a.k.a., where we're looking.
     this.scale = .1;
 
