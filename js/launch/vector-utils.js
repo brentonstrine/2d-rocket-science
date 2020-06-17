@@ -64,7 +64,7 @@ var VectorUtils = {
   },
   setMagnitude: function (v, m) {// Change a vector's values from a percent to a particular magnitude
     v = this.normalize(v);
-    v = this.multiply(v, m);
+    v = this.multiply(v, m)
     return v;
   },
   getReverse: function (vector){

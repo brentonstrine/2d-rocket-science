@@ -1,12 +1,13 @@
 import ShipLayer from './ShipLayer.js';
 import VectorUtils from './vector-utils.js';
-
+import Flight from './Flight.js';
 
 class Ship {
-  constructor (planet, layer) {
+  constructor(planet, viewport) {
     this.type = "ship";
     this.planet = planet;
-    this.defaultXVelocity =  1;//314.8769602565012;//225.1343073610617;
+    this.layer = new ShipLayer(viewport);
+    this.defaultXVelocity =  1;
     this.baseThrust = 2;
     this.gimbalOrder = null;
     this.defaultThrust = {x: this.baseThrust*0, y: this.baseThrust*1}; // straight up
@@ -24,12 +25,20 @@ class Ship {
     this.throttle = 1;
 
     // Rendering vars
-    layer.plotLineColor = "#333333";
+    this.layer.plotLineColor = "#333333";
     this.shipType = "real";
-    this.layer = layer;
     this.step = 75;
 
     this.layer.associateShip(this);
+  }
+
+  launch(flightType, ship, ui) {
+    this.flight = new Flight(ship, ui);
+    if(flightType === "on-the-fly") {
+      this.flight.onTheFly();
+    } else if (flightType === "programmed") {
+      //...
+    }
   }
 
   // set the direction of the gimbal in the next tick
@@ -49,34 +58,33 @@ class Ship {
       return;
     }
     for (var i = 0; i<this.step; i++){
-      this.plotPosition();
+      this.updatePosition();
     }
     console.log(this.step);
     this.layer.drawLayer(this);
   }
 
-
-  plotPosition() {
-    if (VectorUtils.getMagnitude(this.position) <= this.planet.height) {
-      return;
-    }
-    this.time++;
-    this.layer.logMoment(this);
-    this.updatePosition();
-  }
-
   drawPosition() {
-    this.plotPosition();
+    this.updatePosition();
 
     if(this.layer.isShipVisible(this)) {
       this.layer.drawLayer(this);
     } else {
+      console.log("not visible");
       if(this.time%100===1){
       }
     }
   }
 
   updatePosition() {
+    if (VectorUtils.getMagnitude(this.position) <= this.planet.height) {
+      // ship is below the surface.
+      //this.flight.end();
+      return;
+    }
+    this.time++;
+    this.layer.logMoment(this);
+
     this.calculateThrust();
 
     let gravityVector = VectorUtils.getGravity(this.position, this.planet);
@@ -137,7 +145,36 @@ class Ship {
     //   this.thrust.x = totalThrust * thrustAdjustment.x;
     //   this.thrust.y = totalThrust * thrustAdjustment.y;
     // }
-  };
-};
-
+  }
+}
 export default Ship;
+
+
+
+
+
+
+
+
+// Relative Directions
+// nav = {
+//   // planet-relative
+//   down: {x:null, y:null, m:null,},
+//   up: {x:null, y:null, m:null,},
+//   clockwise: {x:null, y:null, m:null,},
+//   anticlockwise: {x:null, y:null, m:null,},
+//
+//   // ship-relative
+//   prograde: {x:null, y:null, m:null},
+//   retrograde: {x:null, y:null, m:null},
+// };
+// calculateNav(){
+//   count++;
+//   nav.down = v.getGravity();
+//   nav.up = v.getReverse(nav.down);
+//   nav.clockwise = v.getStarboard(nav.up);
+//   nav.anticlockwise = v.getPort(nav.up);
+//   nav.prograde = v.subtract(position, position.previous);
+//   nav.retrograde = v.getReverse(nav.prograde);
+//   nav.altitude = v.getMagnitude(position) - planet.height;
+// }

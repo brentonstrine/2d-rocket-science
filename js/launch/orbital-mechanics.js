@@ -86,15 +86,4 @@ class OrbitalMechanics {
     }
     return false;
   }
-
-  calculateNav(){
-    count++;
-    nav.down = v.getGravity();
-    nav.up = v.getReverse(nav.down);
-    nav.clockwise = v.getStarboard(nav.up);
-    nav.anticlockwise = v.getPort(nav.up);
-    nav.prograde = v.subtract(position, position.previous);
-    nav.retrograde = v.getReverse(nav.prograde);
-    nav.altitude = v.getMagnitude(position) - planet.height;
-  }
 }

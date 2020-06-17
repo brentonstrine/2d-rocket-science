@@ -3,6 +3,7 @@ import CanvasLayer from './CanvasLayer.js';
 class PlanetLayer extends CanvasLayer {
   constructor(viewport, planet) {
     super(viewport);
+    this.canvasElement.setAttribute("id", "planet-layer");
     this.planet = planet;
     this.showCrosshairs = false;
     if(this.showCrosshairs) {

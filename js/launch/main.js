@@ -1,4 +1,6 @@
 console.clear();
+
+debugger;
 // DOM Constants
 var world = document.querySelector(".world");
 var heightLine = document.createElement("div");
@@ -144,7 +146,7 @@ console.log(climb);
     if(t<maxTime) {plotRocketAt(t);}
   }
 }
-window.scrollTo( 0, worldHeight );
+global.scrollTo( 0, worldHeight );
 
 var plotPoint = function (domTop, domLeft, domWidth, domHeight) {
     // dom manipulation

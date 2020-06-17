@@ -3,6 +3,7 @@ import CanvasLayer from './CanvasLayer.js';
 class ShipLayer extends CanvasLayer {
   constructor (viewport) {
     super(viewport);
+    this.canvasElement.setAttribute("id", "ship-layer");
     this.history = [];
     this.dotW = 6;
     this.dotH = 6;
@@ -23,6 +24,7 @@ class ShipLayer extends CanvasLayer {
     this.fillStyle ("black");
     //this.logMoment(this.ship); think this should be done elsewhere
     this.renderHistory();
+
   }
 
   logMoment() {
@@ -48,13 +50,12 @@ class ShipLayer extends CanvasLayer {
   }
 
   isShipVisible() {
-    viewport = this.viewport.getViewportData();
     var x = this.viewport.cx(this.ship.position.x);
     var y = this.viewport.cy(this.ship.position.y);
     var px = this.viewport.cx(this.ship.position.previous.x);
     var py = this.viewport.cy(this.ship.position.previous.y);
-    var endPointOnscreen   = (  x >= 0 &&  x < viewport.width &&  y >= 0 &&  y < viewport.height);
-    var startPointOnscreen = ( px >= 0 && px < viewport.width && py >= 0 && py < viewport.height);
+    var endPointOnscreen   = (  x >= 0 &&  x < this.viewport.width &&  y >= 0 &&  y < this.viewport.height);
+    var startPointOnscreen = ( px >= 0 && px < this.viewport.width && py >= 0 && py < this.viewport.height);
 
     if (startPointOnscreen || endPointOnscreen) {
       return true;

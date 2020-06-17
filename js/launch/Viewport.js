@@ -142,10 +142,7 @@ class Viewport {
   }
 
   getViewportData() {
-    return {
-      width: this.width,
-      height: this.height,
-    }
+    debugger;
   }
 };
 
