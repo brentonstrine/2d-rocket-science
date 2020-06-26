@@ -23,6 +23,8 @@ $("document").ready(function(){
 
 
   $(".parts").on("mousedown touchstart", ".part", function(pos){
+      console.log("parts.on.mousemove.touchstart");
+
       pos.preventDefault();
       pos.stopPropagation();
 
@@ -40,7 +42,7 @@ $("document").ready(function(){
       var snapZones = RocketScience.part.getSnapZones(heldPartId);
 
       $("body").on("mousemove.partmove touchmove", function(e){
-          //console.log("-movemovemovemovemove-");
+          console.log("body.on.mousemove.partmove");
           e.preventDefault();
           var newPartX = e.clientX || event.pageX || event.touches[0].pageX;
           var newPartY = e.clientY || event.pageY || event.touches[0].pageY;
@@ -68,6 +70,7 @@ $("document").ready(function(){
 
 
       $this.one("mouseup touchcancel", function(){
+          console.log("parts.one.mouseup.touchcancel");
           $("body").off(".partmove");
       });
   });
@@ -81,7 +84,7 @@ $("document").ready(function(){
   //     var downT = pos.clientY;
   //     var $this = $(this);
   //     var partPosition = $this.css(["top", "left"]);
-  //     
+  //
   // });
 
 
